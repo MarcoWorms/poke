@@ -1,0 +1,52 @@
+#gameContainer {
+  font: arial;
+  color: #111111;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.container {
+  display: block;
+  position: relative;
+  width: 160px;
+  min-height: 100px;
+  max-height: 200px;
+  background-color: rgb(249, 193, 193);
+}
+
+.poke {
+  text-align: center;
+}
+
+.poke .inner {
+  position: relative;
+}
+
+.poke .name {
+
+}
+
+.poke .img {
+
+}
+
+.poke .hp {
+
+}
+
+#player {
+  float: right;
+}
+
+#enemy {
+  float: left;
+}
+
+#playerPokes {
+  float: right;
+  min-height: none;
+  max-height: none;
+  height: 400px;
+}
