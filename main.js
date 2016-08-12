@@ -103,6 +103,8 @@ const makeDomHandler = () => {
       )
     })
   }
+  const heal = $('#heal')
+  heal.addEventListener('click', () => { userInteractions.healAllPlayerPokemons() })
   return {
     renderPokeOnContainer: renderPokeOnContainer
   , renderPokeList: renderPokeList
@@ -195,11 +197,8 @@ const makeEnemy = (starter) => {
   var active = starter
 
   const generateNew = (recipe) => {
-    const poke = pokeByName(
-      randomArrayElement(recipe.pokes)
-    , Math.ceil(Math.random() * recipe.maxLevel)
-    )
-    return makePoke(poke)
+    const poke = pokeByName(randomArrayElement(recipe.pokes))
+    return makePoke(poke, Math.ceil(Math.random() * recipe.maxLevel))
   }
 
   return {
@@ -215,6 +214,10 @@ const makeUserInteractions = (player, dom, combatLoop) => {
       player.setActive(newActiveIndex)
       combatLoop.changePlayerPoke(player.activePoke())
       dom.renderPokeOnContainer('player', player.activePoke())
+    },
+    healAllPlayerPokemons: () => {
+      //
+      console.log('heal')
     }
   }
 }
@@ -257,7 +260,7 @@ const makeCombatLoop = (enemy, player, dom) => {
       || (who === 'player') && !defender.alive())
       {
         //enemyActivePoke is dead
-        playerActivePoke.giveExp(enemyActivePoke.baseExp() / 5)
+        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
         enemy.generateNew(ENEMIES_RECIPES.easy)
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
@@ -302,9 +305,9 @@ const enemy = makeEnemy()
 enemy.generateNew(ENEMIES_RECIPES.easy)
 
 const player = makePlayer()
-player.addPoke(makePoke(pokeById(1), 5))
-player.addPoke(makePoke(pokeByName('Charmander')))
-player.addPoke(makePoke(pokeByName('Squirtle')))
+player.addPoke(makePoke(pokeById(1), 6))
+player.addPoke(makePoke(pokeByName('Charmander'), 6))
+player.addPoke(makePoke(pokeByName('Squirtle'), 6))
 const dom = makeDomHandler()
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, dom, combatLoop)
