@@ -1,10 +1,20 @@
 #gameContainer {
-  font: arial;
+  font-family: arial;
   color: #111111;
+  width: 600px;
+  margin: auto;
 }
 
 ul {
   list-style-type: none;
+  padding: 10px;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0 em;
+}
+
+progress {
+  box-sizing: border-box;
+  width: 70px;
 }
 
 .container {
@@ -14,6 +24,8 @@ ul {
   min-height: 100px;
   max-height: 200px;
   background-color: rgb(249, 193, 193);
+  border: solid 1px red;
+  border-radius: 5px;
 }
 
 .poke {
@@ -22,6 +34,7 @@ ul {
 
 .poke .inner {
   position: relative;
+  line-height: 25px;
 }
 
 .poke .name {
@@ -33,7 +46,7 @@ ul {
 }
 
 .poke .hp {
-
+  font-size: 12px;
 }
 
 #player {
@@ -49,4 +62,5 @@ ul {
   min-height: none;
   max-height: none;
   height: 400px;
+  margin-left: 10px;
 }

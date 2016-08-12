@@ -70,10 +70,13 @@ const makeDomHandler = () => {
       name: container.querySelector('.name')
     , img: container.querySelector('.img')
     , hp: container.querySelector('.hp')
+    , hpBar: container.querySelector('.hpBar')
     }
     setValue(domElements.name, poke.pokeName() + ' (' + poke.level() + ')')
     seProp(domElements.img, 'src', poke.image())
-    setValue(domElements.hp, poke.life())
+    setValue(domElements.hp, poke.lifeAsText())
+    seProp(domElements.hpBar, 'value', poke.life.current())
+    seProp(domElements.hpBar, 'max', poke.life.max())
     logEffect('Rendered Poke container', [domElements])
   }
   const renderPokeList = (id, pokemons) => {
@@ -143,7 +146,11 @@ const makePoke = (pokeModel, initialLevel) => {
     pokeName: () => poke.pokemon[0].Pokemon
   , image: () => poke.images.front
   , type: () => poke.stats[0].types.text
-  , life: () => '' + combat.mutable.hp + ' / ' + combat.maxHp()
+  , lifeAsText: () => '' + combat.mutable.hp + ' / ' + combat.maxHp()
+  , life: {
+      current: () => combat.mutable.hp
+    , max: () => combat.maxHp()
+    }
   , alive: () => combat.mutable.hp > 0
   , giveExp: (ammount) => exp += ammount
   , level: () => currentLevel()
@@ -156,8 +163,8 @@ const makePoke = (pokeModel, initialLevel) => {
   }
   return poke_interface
 }
-
 const pokeAleatorio = (level) => makePoke(randomArrayElement(POKEDEX), level)
+
 
 const makePlayer = () => {
   const pokemons = []
@@ -177,6 +184,31 @@ const makePlayer = () => {
   return player_interface
 }
 
+const ENEMIES_RECIPES = {
+  easy: {
+    pokes: ['Rattata', 'Pidgey']
+  , maxLevel: 5
+  }
+}
+
+const makeEnemy = (starter) => {
+  var active = starter
+
+  const generateNew = (recipe) => {
+    const poke = pokeByName(
+      randomArrayElement(recipe.pokes)
+    , Math.ceil(Math.random() * recipe.maxLevel)
+    )
+    return makePoke(poke)
+  }
+
+  return {
+    activePoke: () => active,
+    generateNew: (recipe) => active = generateNew(recipe)
+  }
+}
+
+
 const makeUserInteractions = (player, dom, combatLoop) => {
   return {
     changePokemon: (newActiveIndex) => {
@@ -189,45 +221,25 @@ const makeUserInteractions = (player, dom, combatLoop) => {
 
 const makeCombatLoop = (enemy, player, dom) => {
   var playerActivePoke = player.activePoke()
+  var enemyActivePoke = enemy.activePoke()
   var playerTimerId = null
   var enemyTimerId = null
   const playerTimer = () => {
     playerTimerId = window.setTimeout(
-      () => dealDamage(playerActivePoke, enemy, 'player')
+      () => dealDamage(playerActivePoke, enemyActivePoke, 'player')
     , playerActivePoke.attackSpeed()
     )
   }
   const enemyTimer = () => {
     enemyTimerId = window.setTimeout(
-      () => dealDamage(enemy, playerActivePoke, 'enemy')
-    , enemy.attackSpeed()
+      () => dealDamage(enemyActivePoke, playerActivePoke, 'enemy')
+    , enemyActivePoke.attackSpeed()
     )
   }
   const dealDamage = (attacker, defender, who) => {
-    if (attacker.alive()) {
+    if (attacker.alive() && defender.alive()) {
+      // both alive
       defender.takeDamage(attacker.attack())
-    }
-    if (!attacker.alive() || !defender.alive()) {
-      if ((who === 'enemy') && !attacker.alive()
-      || (who === 'player') && !defender.alive())
-      {
-        playerActivePoke.giveExp(enemy.baseExp() / 5)
-        const newEnemy = makePoke(pokeByName(['Rattata', 'Pidgey'][Math.floor(Math.random() * 2)]), Math.ceil(Math.random() * 5))
-        window.clearTimeout(enemyTimerId)
-        window.clearTimeout(playerTimerId)
-        enemy = newEnemy
-        renderView(dom, newEnemy, player)
-        enemyTimer()
-        playerTimer()
-      }
-      if ((who === 'player') && !attacker.alive()
-      || (who === 'enemy') && !defender.alive())
-      {
-        window.clearTimeout(playerTimerId)
-        window.clearTimeout(enemyTimerId)
-        renderView(dom, enemy, player)
-      }
-    } else {
       if (who === 'player') {
         playerTimer()
       }
@@ -236,25 +248,49 @@ const makeCombatLoop = (enemy, player, dom) => {
       }
       renderView(dom, enemy, player)
     }
+    if (!attacker.alive() || !defender.alive()) {
+      // one is dead
+      window.clearTimeout(playerTimerId)
+      window.clearTimeout(enemyTimerId)
+
+      if ((who === 'enemy') && !attacker.alive()
+      || (who === 'player') && !defender.alive())
+      {
+        //enemyActivePoke is dead
+        playerActivePoke.giveExp(enemyActivePoke.baseExp() / 5)
+        enemy.generateNew(ENEMIES_RECIPES.easy)
+        enemyActivePoke = enemy.activePoke()
+        enemyTimer()
+        playerTimer()
+      }
+      renderView(dom, enemy, player)
+    }
   }
   const init = () => {
     playerTimer()
     enemyTimer()
   }
+  const stop = () => {
+    window.clearTimeout(playerTimerId)
+    window.clearTimeout(enemyTimerId)
+  }
+  const refresh = () => {
+    stop()
+    init()
+  }
   return {
-    init: init,
-    changePlayerPoke: (newPoke) => {
+    init: init
+  , stop: stop
+  , changePlayerPoke: (newPoke) => {
       playerActivePoke = newPoke
-      window.clearTimeout(playerTimerId)
-      window.clearTimeout(enemyTimerId)
-      playerTimer()
-      enemyTimer()
+      refresh()
     }
+  , refresh: refresh
   }
 }
 
 const renderView = (dom, enemy, player) => {
-  dom.renderPokeOnContainer('enemy', enemy)
+  dom.renderPokeOnContainer('enemy', enemy.activePoke())
   dom.renderPokeOnContainer('player', player.activePoke())
   dom.renderPokeList('playerPokes', player.pokemons())
 }
@@ -262,7 +298,8 @@ const renderView = (dom, enemy, player) => {
 // main
 
 //var enemy = pokeAleatorio(3)
-var enemy = makePoke(pokeByName(['Rattata', 'Pidgey'][Math.floor(Math.random() * 2)]), Math.ceil(Math.random() * 5))
+const enemy = makeEnemy()
+enemy.generateNew(ENEMIES_RECIPES.easy)
 
 const player = makePlayer()
 player.addPoke(makePoke(pokeById(1), 5))
