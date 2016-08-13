@@ -1,10 +1,10 @@
 /*
-  global: POKEDEX : Array PokeModel
-  global: TYPES : Array PokeTypes
+  global: POKEDEX
+  global: TYPES
+  global: EXP_TABLE
+  global: ENEMIES_RECIPES
 */
 'use strict'
-
-const DEBUG_MODE = 0
 
 const pokeById = (id) => POKEDEX[id - 1]
 const pokeByName = (name) => POKEDEX.filter((el) => el.pokemon[0].Pokemon === name)[0]
@@ -15,33 +15,15 @@ EXP_TABLE["Medium Slow"] = [0, -53, 9, 57, 96, 135, 179, 236, 314, 419, 560, 742
 EXP_TABLE["Medium Fast"] = [0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197, 2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648, 12167, 13824, 15625, 17576, 19683, 21952, 24389, 27000, 29791, 32768, 35937, 39304, 42875, 46656, 50653, 54872, 59319, 64000, 68921, 74088, 79507, 85184, 91125, 97336, 103823, 110592, 117649, 125000, 132651, 140608, 148877, 157464, 166375, 175616, 185193, 195112, 205379, 216000, 226981, 238328, 250047, 262144, 274625, 287496, 300763, 314432, 328509, 343000, 357911, 373248, 389017, 405224, 421875, 438976, 456533, 474552, 493039, 512000, 531441, 551368, 571787, 592704, 614125, 636056, 658503, 681472, 704969, 729000, 753571, 778688, 804357, 830584, 857375, 884736, 912673, 941192, 970299, 1000000]
 EXP_TABLE["Fast"] = [0, 0, 6, 21, 51, 100, 172, 274, 409, 583, 800, 1064, 1382, 1757, 2195, 2700, 3276, 3930, 4665, 5487, 6400, 7408, 8518, 9733, 11059, 12500, 14060, 15746, 17561, 19511, 21600, 23832, 26214, 28749, 31443, 34300, 37324, 40522, 43897, 47455, 51200, 55136, 59270, 63605, 68147, 72900, 77868, 83058, 88473, 94119, 100000, 106120, 112486, 119101, 125971, 133100, 140492, 148154, 156089, 164303, 172800, 181584, 190662, 200037, 209715, 219700, 229996, 240610, 251545, 262807, 274400, 286328, 298598, 311213, 324179, 337500, 351180, 365226, 379641, 394431, 409600, 425152, 441094, 457429, 474163, 491300, 508844, 526802, 545177, 563975, 583200, 602856, 622950, 643485, 664467, 685900, 707788, 730138, 752953, 776239, 800000]
 
+const ENEMIES_RECIPES = {
+  easy: {
+    pokes: ['Rattata', 'Pidgey']
+  , maxLevel: 4
+  }
+}
 
-console.logWithSize = (text, size) => {
-  console.log(`%c${text}`, `font-size: ${size}px;`)
-}
-console.logWithColor = (text, color) => {
-  console.log(`%c${text}`, `color: ${color};`)
-}
-console.logWithCustomCss = (text, css) => {
-  console.log(`%c${text}`, `${css}`)
-}
-const logEffect = (effectDescription, argsList) => {
-  const titlePrefix = `EFFECT! > `
-  if (DEBUG_MODE === 2) {
-    console.logWithSize(titlePrefix + effectDescription, 20)
-    argsList.forEach((el, index) => {
-      console.logWithColor(`___ Arg ${index} ___`, '#00EE00')
-      if (el.tagName) {
-        console.log(el)
-      } else {
-        console.table(el)
-      }
-    })
-  }
-  if (DEBUG_MODE === 1) {
-    console.log(titlePrefix + effectDescription)
-  }
-}
+const cloneJsonObject = (object) => JSON.parse(JSON.stringify(object))
+const randomArrayElement = (array) => array[Math.floor(Math.random() * array.length)]
 
 const makeDomHandler = () => {
   const domQuery = (cssQuery) => document.querySelector(cssQuery)
@@ -54,14 +36,12 @@ const makeDomHandler = () => {
     if (!append) {
       domElement.innerHTML = newValue
     }
-    logEffect('Set Dom Element Attribute', [domElement, newValue, append])
   }
   const getValue = (domElement) => {
     return domElement.innerHTML
   }
   const seProp = (domElement, attribute, newValue) => {
       domElement[attribute] = newValue
-      logEffect('Set Dom Element Attribute', [domElement, attribute, newValue])
   }
   const renderPokeOnContainer = (id, poke) => {
     const containerCssQuery = '.container.poke' + '#' + id
@@ -77,7 +57,6 @@ const makeDomHandler = () => {
     setValue(domElements.hp, poke.lifeAsText())
     seProp(domElements.hpBar, 'value', poke.life.current())
     seProp(domElements.hpBar, 'max', poke.life.max())
-    logEffect('Rendered Poke container', [domElements])
   }
   const renderPokeList = (id, pokemons) => {
     const listCssQuery = '.container.pokeList' + '#' + id
@@ -110,11 +89,6 @@ const makeDomHandler = () => {
   , renderPokeList: renderPokeList
   }
 }
-
-const cloneJsonObject = (object) => JSON.parse(JSON.stringify(object))
-
-const randomArrayElement = (array) => array[Math.floor(Math.random() * array.length)]
-
 
 const makePoke = (pokeModel, initialLevel) => {
   const poke = cloneJsonObject(pokeModel)
@@ -165,8 +139,7 @@ const makePoke = (pokeModel, initialLevel) => {
   }
   return poke_interface
 }
-const pokeAleatorio = (level) => makePoke(randomArrayElement(POKEDEX), level)
-
+const makeRandomPoke = (level) => makePoke(randomArrayElement(POKEDEX), level)
 
 const makePlayer = () => {
   const pokemons = []
@@ -174,11 +147,9 @@ const makePlayer = () => {
   const player_interface = {
     addPoke: (poke) => {
       pokemons.push(poke)
-      logEffect('Added Poke on Player inventory', [poke])
     }
   , setActive: (index) => {
       activePoke = index
-      logEffect('Changed player active pokemon', [activePoke, pokemons[activePoke]])
     }
   , activePoke: () => pokemons[activePoke]
   , pokemons: () => pokemons
@@ -186,27 +157,19 @@ const makePlayer = () => {
   return player_interface
 }
 
-const ENEMIES_RECIPES = {
-  easy: {
-    pokes: ['Rattata', 'Pidgey']
-  , maxLevel: 4
-  }
-}
-
 const makeEnemy = (starter) => {
   var active = starter
 
-  const generateNewByRecipe = (recipe) => {
+  const generateNew = (recipe) => {
     const poke = pokeByName(randomArrayElement(recipe.pokes))
     return makePoke(poke, Math.ceil(Math.random() * recipe.maxLevel))
   }
 
   return {
     activePoke: () => active,
-    generateNewByRecipe: (recipe) => active = generateNewByRecipe(recipe)
+    generateNew: (recipe) => active = generateNew(recipe)
   }
 }
-
 
 const makeUserInteractions = (player, dom, combatLoop) => {
   return {
@@ -261,7 +224,7 @@ const makeCombatLoop = (enemy, player, dom) => {
       {
         //enemyActivePoke is dead
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
-        enemy.generateNewByRecipe(ENEMIES_RECIPES.easy)
+        enemy.generateNew(ENEMIES_RECIPES.easy)
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
@@ -302,7 +265,7 @@ const renderView = (dom, enemy, player) => {
 
 //var enemy = pokeAleatorio(3)
 const enemy = makeEnemy()
-enemy.generateNewByRecipe(ENEMIES_RECIPES.easy)
+enemy.generateNew(ENEMIES_RECIPES.easy)
 
 const player = makePlayer()
 player.addPoke(makePoke(pokeById(1), 6))
