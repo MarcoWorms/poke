@@ -189,21 +189,21 @@ const makePlayer = () => {
 const ENEMIES_RECIPES = {
   easy: {
     pokes: ['Rattata', 'Pidgey']
-  , maxLevel: 5
+  , maxLevel: 4
   }
 }
 
 const makeEnemy = (starter) => {
   var active = starter
 
-  const generateNew = (recipe) => {
+  const generateNewByRecipe = (recipe) => {
     const poke = pokeByName(randomArrayElement(recipe.pokes))
     return makePoke(poke, Math.ceil(Math.random() * recipe.maxLevel))
   }
 
   return {
     activePoke: () => active,
-    generateNew: (recipe) => active = generateNew(recipe)
+    generateNewByRecipe: (recipe) => active = generateNewByRecipe(recipe)
   }
 }
 
@@ -261,7 +261,7 @@ const makeCombatLoop = (enemy, player, dom) => {
       {
         //enemyActivePoke is dead
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
-        enemy.generateNew(ENEMIES_RECIPES.easy)
+        enemy.generateNewByRecipe(ENEMIES_RECIPES.easy)
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
@@ -302,7 +302,7 @@ const renderView = (dom, enemy, player) => {
 
 //var enemy = pokeAleatorio(3)
 const enemy = makeEnemy()
-enemy.generateNew(ENEMIES_RECIPES.easy)
+enemy.generateNewByRecipe(ENEMIES_RECIPES.easy)
 
 const player = makePlayer()
 player.addPoke(makePoke(pokeById(1), 6))
