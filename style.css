@@ -25,6 +25,9 @@ progress {
   box-sizing: border-box;
   width: 70px;
 }
+.expBar {
+  width: 140px;
+}
 
 .container {
   display: block;
@@ -65,9 +68,10 @@ progress {
   border-radius: 0 5px 5px 5px;
 }
 
-#enemy .status {
+#enemy .status, #enemy .expBar {
   display: none;
 }
+
 
 #player {
   float: left;
@@ -80,8 +84,9 @@ progress {
   float: left;
   min-height: none;
   max-height: none;
-  height: 400px;
+  height: 800px;
   text-align: center;
+  overflow-y: scroll;
 }
 
 #heal {

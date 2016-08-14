@@ -37,7 +37,7 @@ const ROUTES = {
   }
 , rock_arena: {
     name: 'Rock Arena'
-  , pokes: ['Geodude', 'Onyx']
+  , pokes: ['Geodude', 'Onix']
   , maxLevel: 20
   , unlocked: true
   }
@@ -83,6 +83,24 @@ const ROUTES = {
   , maxLevel: 60
   , unlocked: true
   }
+, fields4: {
+    name: 'Fields 4'
+  , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing']
+  , maxLevel: 68
+  , unlocked: true
+  }
+, fields5: {
+    name: 'Fields 5'
+  , pokes: ['Tangela', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz']
+  , maxLevel: 75
+  , unlocked: true
+  }
+, birds: {
+    name: 'Birds'
+  , pokes: ['Articuno', 'Zapdos', 'Moltres']
+  , maxLevel: 99
+  , unlocked: true
+  }
 }
 
 const RNG = (func, chance) => {
@@ -104,14 +122,18 @@ const makeDomHandler = () => {
       domElement.innerHTML += newValue
     }
     if (!append) {
-      domElement.innerHTML = newValue
+      if (domElement.innerHTML !== newValue) {
+        domElement.innerHTML = newValue
+      }
     }
   }
   const getValue = (domElement) => {
     return domElement.innerHTML
   }
   const setProp = (domElement, attribute, newValue) => {
-      domElement[attribute] = newValue
+      if (domElement[attribute] !== newValue) {
+        domElement[attribute] = newValue
+      }
   }
   const renderPokeOnContainer = (id, poke, face) => {
     face = face || 'front'
@@ -129,6 +151,7 @@ const makeDomHandler = () => {
     , img: container.querySelector('.img')
     , hp: container.querySelector('.hp')
     , hpBar: container.querySelector('.hpBar')
+    , expBar: container.querySelector('.expBar')
     , status: container.querySelector('.status')
     }
     setValue(domElements.name, poke.pokeName() + ' (' + poke.level() + ')')
@@ -136,6 +159,8 @@ const makeDomHandler = () => {
     setValue(domElements.hp, poke.lifeAsText())
     setProp(domElements.hpBar, 'value', poke.life.current())
     setProp(domElements.hpBar, 'max', poke.life.max())
+    setProp(domElements.expBar, 'value', poke.currentExp() - poke.thisLevelExp())
+    setProp(domElements.expBar, 'max', poke.nextLevelExp() - poke.thisLevelExp())
     setValue(domElements.status, pokeStatusAsText(poke))
   }
   const healElement = $('#heal')
@@ -149,7 +174,7 @@ const makeDomHandler = () => {
       setValue(healElement, 'Heal: ' + Math.floor(((canHeal/30000)*100)) + '%')
     }
   }
-  const renderPokeList = (id, list) => {
+  const renderPokeList = (id, list, player) => {
     const listCssQuery = '.container.list' + '#' + id
     const listContainer = $(listCssQuery)
     const listElement = listContainer.querySelector('.list')
@@ -158,11 +183,22 @@ const makeDomHandler = () => {
       setValue(
         listElement
       , `<li>
+          <a href="#"
+            onclick="userInteractions.deletePokemon(${index})"
+            style="
+              color: red;
+              text-decoration: none;
+            "
+          >
+            X
+          </a>
            <a
            href="#"
            onclick="userInteractions.changePokemon(${index})"
            style="color: ${poke.alive()
-                            && 'green'
+                            && (poke === player.activePoke()
+                              && 'rgb(111, 217, 5)'
+                              ||'rgb(66, 116, 10)')
                             || 'red'
                           };
           "
@@ -270,6 +306,9 @@ const makePoke = (pokeModel, initialLevel) => {
     }
   , alive: () => combat.mutable.hp > 0
   , giveExp: (ammount) => exp += ammount
+  , currentExp: () => exp
+  , nextLevelExp: () => expTable[currentLevel()]
+  , thisLevelExp: () => expTable[currentLevel() - 1]
   , level: () => currentLevel()
   , attackSpeed: () => Math.floor(1000 / (500 + combat.speed()) * 800)
   , attack: () => combat.attack()
@@ -285,7 +324,7 @@ const makePoke = (pokeModel, initialLevel) => {
 const makeRandomPoke = (level) => makePoke(randomArrayElement(POKEDEX), level)
 
 const makePlayer = () => {
-  const pokemons = []
+  var pokemons = []
   var activePoke = 0
   var lastHeal = Date.now()
   const canHeal = () => {
@@ -314,6 +353,12 @@ const makePlayer = () => {
     }
     return canHeal()
   }
+  , deletePoke: (index) => {
+      pokemons.splice(index, 1)
+      if (index <= activePoke) {
+        activePoke -= 1
+      }
+    }
   }
   return player_interface
 }
@@ -336,6 +381,11 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
   return {
     changePokemon: (newActiveIndex) => {
       player.setActive(newActiveIndex)
+      combatLoop.changePlayerPoke(player.activePoke())
+      renderView(dom, enemy, player)
+    },
+    deletePokemon: (index) => {
+      player.deletePoke(index)
       combatLoop.changePlayerPoke(player.activePoke())
       renderView(dom, enemy, player)
     },
@@ -382,7 +432,8 @@ const makeCombatLoop = (enemy, player, dom) => {
       if (who === 'enemy') {
         enemyTimer()
       }
-      renderView(dom, enemy, player)
+      dom.renderPokeOnContainer('enemy', enemy.activePoke())
+      dom.renderPokeOnContainer('player', player.activePoke(), 'back')
     }
     if (!attacker.alive() || !defender.alive()) {
       // one is dead
@@ -436,7 +487,7 @@ const makeCombatLoop = (enemy, player, dom) => {
 const renderView = (dom, enemy, player) => {
   dom.renderPokeOnContainer('enemy', enemy.activePoke())
   dom.renderPokeOnContainer('player', player.activePoke(), 'back')
-  dom.renderPokeList('playerPokes', player.pokemons(), player.canHeal())
+  dom.renderPokeList('playerPokes', player.pokemons(), player)
   dom.renderRouteList('areasList', ROUTES)
 }
 
@@ -448,8 +499,6 @@ enemy.generateNew(ROUTES[currentRouteId])
 
 const player = makePlayer()
 player.addPoke(makePoke(pokeById(1), 5))
-//player.addPoke(makePoke(pokeByName('Charmander'), 3))
-//player.addPoke(makePoke(pokeByName('Squirtle'), 3))
 const dom = makeDomHandler()
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
