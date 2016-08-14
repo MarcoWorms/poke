@@ -496,7 +496,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
         player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 50) + (enemyActivePoke.level() / 3)))
         const afterExp = player.pokemons().map((poke) => poke.level())
-        if (beforeExp !== afterExp) {
+        if (beforeExp.join('') !== afterExp.join('')) {
           dom.renderPokeList('playerPokes', player.pokemons(), player)
         }
         player.savePokes()
