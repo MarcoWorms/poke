@@ -492,8 +492,13 @@ const makeCombatLoop = (enemy, player, dom) => {
           player.addPoke.bind(null, enemy.activePoke())
         , 1
         ) && renderView(dom, enemy, player)
-
-        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 10) + enemyActivePoke.level())
+        const beforeExp = player.pokemons().map((poke) => poke.level())
+        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
+        player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 50) + (enemyActivePoke.level() / 3)))
+        const afterExp = player.pokemons().map((poke) => poke.level())
+        if (beforeExp !== afterExp) {
+          dom.renderPokeList('playerPokes', player.pokemons(), player)
+        }
         player.savePokes()
         enemy.generateNew(ROUTES[currentRouteId])
         enemyActivePoke = enemy.activePoke()
