@@ -108,7 +108,9 @@ const RNG = (func, chance) => {
   const rnd = Math.random() * 100
   if (rnd < chance) {
     func()
+    return true
   }
+  return false
 }
 
 const cloneJsonObject = (object) => JSON.parse(JSON.stringify(object))
@@ -392,7 +394,7 @@ const makePlayer = () => {
       })
     }
   , loadPokes: () => {
-      Array(localStorage.getItem(`totalPokes`)).fill(0).forEach((el, index) => {
+      Array(Number(localStorage.getItem(`totalPokes`))).fill(0).forEach((el, index) => {
         const pokeName = JSON.parse(localStorage.getItem('poke'+index))[0]
         const exp = JSON.parse(localStorage.getItem('poke'+index))[1]
         pokemons.push(makePoke(pokeByName(pokeName), false, Number(exp)))
@@ -441,6 +443,7 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
       combatLoop.changeEnemyPoke(enemy.activePoke())
       renderView(dom, enemy, player)
       player.savePokes()
+      dom.renderRouteList('areasList', ROUTES)
     }
   }
 }
@@ -488,7 +491,8 @@ const makeCombatLoop = (enemy, player, dom) => {
         RNG(
           player.addPoke.bind(null, enemy.activePoke())
         , 1
-        )
+        ) && renderView(dom, enemy, player)
+
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 10) + enemyActivePoke.level())
         player.savePokes()
         enemy.generateNew(ROUTES[currentRouteId])
@@ -496,7 +500,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         enemyTimer()
         playerTimer()
       }
-      renderView(dom, enemy, player)
+      dom.renderPokeOnContainer('enemy', enemy.activePoke())
     }
   }
   const init = () => {
@@ -530,7 +534,6 @@ const renderView = (dom, enemy, player) => {
   dom.renderPokeOnContainer('enemy', enemy.activePoke())
   dom.renderPokeOnContainer('player', player.activePoke(), 'back')
   dom.renderPokeList('playerPokes', player.pokemons(), player)
-  dom.renderRouteList('areasList', ROUTES)
 }
 
 // main
@@ -547,6 +550,7 @@ if (localStorage.getItem(`totalPokes`) !== null) {
 }
 
 const dom = makeDomHandler()
+dom.renderRouteList('areasList', ROUTES)
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
 
