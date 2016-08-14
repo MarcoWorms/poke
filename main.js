@@ -499,6 +499,8 @@ const makeCombatLoop = (enemy, player, dom) => {
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
+      } else {
+        dom.renderPokeList('playerPokes', player.pokemons(), player)
       }
       dom.renderPokeOnContainer('enemy', enemy.activePoke())
     }
