@@ -68,7 +68,7 @@ const ROUTES = {
     }
   , mtmoon: {
       name: 'Mt. Moon'
-    , pokes: ['Jigglypuff', 'Clefairy', 'Voltorb']
+    , pokes: ['Jigglypuff', 'Voltorb', 'Porygon']
     , maxLevel: 52
     , unlocked: true
     }
