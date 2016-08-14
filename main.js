@@ -22,6 +22,12 @@ const ENEMIES_RECIPES = {
   }
 }
 
+const RNG = (func, chance) => {
+  if ((Math.random() * 100) < chance) {
+    func()
+  }
+}
+
 const cloneJsonObject = (object) => JSON.parse(JSON.stringify(object))
 const randomArrayElement = (array) => array[Math.floor(Math.random() * array.length)]
 
@@ -82,8 +88,12 @@ const makeDomHandler = () => {
       )
     })
   }
-  const heal = $('#heal')
-  heal.addEventListener('click', () => { userInteractions.healAllPlayerPokemons() })
+  const bindEvents = () => {
+    $('#heal').addEventListener( 'click'
+    , () => { userInteractions.healAllPlayerPokemons() }
+    )
+  }
+  bindEvents()
   return {
     renderPokeOnContainer: renderPokeOnContainer
   , renderPokeList: renderPokeList
@@ -136,6 +146,7 @@ const makePoke = (pokeModel, initialLevel) => {
                                                     && Math.ceil((enemyAttack - combat.defense()/10) * (Math.random() * 2) / 100)
                                                     || 0
   , baseExp: () => Number(poke.exp[0]['base exp'])
+  , heal: () => combat.mutable.hp = combat.maxHp()
   }
   return poke_interface
 }
@@ -153,6 +164,7 @@ const makePlayer = () => {
     }
   , activePoke: () => pokemons[activePoke]
   , pokemons: () => pokemons
+  , healAllPokemons: () => pokemons.forEach((poke) => poke.heal())
   }
   return player_interface
 }
@@ -171,16 +183,17 @@ const makeEnemy = (starter) => {
   }
 }
 
-const makeUserInteractions = (player, dom, combatLoop) => {
+const makeUserInteractions = (player, enemy, dom, combatLoop) => {
   return {
     changePokemon: (newActiveIndex) => {
       player.setActive(newActiveIndex)
       combatLoop.changePlayerPoke(player.activePoke())
-      dom.renderPokeOnContainer('player', player.activePoke())
+      renderView(dom, enemy, player)
     },
     healAllPlayerPokemons: () => {
-      //
-      console.log('heal')
+      player.healAllPokemons()
+      combatLoop.changePlayerPoke(player.activePoke())
+      renderView(dom, enemy, player)
     }
   }
 }
@@ -223,6 +236,11 @@ const makeCombatLoop = (enemy, player, dom) => {
       || (who === 'player') && !defender.alive())
       {
         //enemyActivePoke is dead
+        RNG(
+          player.addPoke.bind(null, enemy.activePoke())
+        , 1
+        )
+
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
         enemy.generateNew(ENEMIES_RECIPES.easy)
         enemyActivePoke = enemy.activePoke()
@@ -273,7 +291,7 @@ player.addPoke(makePoke(pokeByName('Charmander'), 6))
 player.addPoke(makePoke(pokeByName('Squirtle'), 6))
 const dom = makeDomHandler()
 const combatLoop = makeCombatLoop(enemy, player, dom)
-const userInteractions = makeUserInteractions(player, dom, combatLoop)
+const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
 
 renderView(dom, enemy, player)
 

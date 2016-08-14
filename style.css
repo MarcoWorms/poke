@@ -1,8 +1,17 @@
+body {
+  background-color: rgb(219, 219, 219);
+}
+
 #gameContainer {
   font-family: arial;
   color: #111111;
   width: 600px;
   margin: auto;
+  background-color: rgb(82, 153, 228);
+  height: 1000px;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 0 0 10px black;
 }
 
 ul {
@@ -23,8 +32,9 @@ progress {
   width: 160px;
   min-height: 100px;
   max-height: 200px;
-  background-color: rgb(249, 193, 193);
-  border: solid 1px red;
+  background-color: rgb(217, 217, 217);
+  border: solid 1px rgb(10, 0, 130);
+  box-shadow: 0 0 2px rgb(10, 0, 130);
   border-radius: 5px;
 }
 
