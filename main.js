@@ -229,7 +229,6 @@ const makeCombatLoop = (enemy, player, dom) => {
     if (attacker.alive() && defender.alive()) {
       // both alive
       const damageMultiplier = TYPES[attacker.type()][defender.type()]
-      console.log(damageMultiplier)
       defender.takeDamage(attacker.attack() * damageMultiplier)
       if (who === 'player') {
         playerTimer()
