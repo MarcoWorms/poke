@@ -18,7 +18,7 @@ EXP_TABLE["Fast"] = [0, 0, 6, 21, 51, 100, 172, 274, 409, 583, 800, 1064, 1382, 
 const ENEMIES_RECIPES = {
   easy: {
     pokes: ['Rattata', 'Pidgey']
-  , maxLevel: 4
+  , maxLevel: 5
   }
 }
 
@@ -50,6 +50,13 @@ const makeDomHandler = () => {
       domElement[attribute] = newValue
   }
   const renderPokeOnContainer = (id, poke) => {
+    const pokeStatusAsText = (poke) => {
+      var output = ''
+      output += 'Attack Speed: ' + poke.attackSpeed()/1000 + '<br>'
+      output += '\nAttack: ' + poke.allCombat().attack() + '<br>'
+      output += '\nDefense: ' + poke.allCombat().defense() + '<br>'
+      return output
+    }
     const containerCssQuery = '.container.poke' + '#' + id
     const container = $(containerCssQuery)
     const domElements  = {
@@ -57,15 +64,17 @@ const makeDomHandler = () => {
     , img: container.querySelector('.img')
     , hp: container.querySelector('.hp')
     , hpBar: container.querySelector('.hpBar')
+    , status: container.querySelector('.status')
     }
     setValue(domElements.name, poke.pokeName() + ' (' + poke.level() + ')')
     seProp(domElements.img, 'src', poke.image())
     setValue(domElements.hp, poke.lifeAsText())
     seProp(domElements.hpBar, 'value', poke.life.current())
     seProp(domElements.hpBar, 'max', poke.life.max())
+    setValue(domElements.status, pokeStatusAsText(poke))
   }
   const renderPokeList = (id, pokemons) => {
-    const listCssQuery = '.container.pokeList' + '#' + id
+    const listCssQuery = '.container.list' + '#' + id
     const pokeListContainer = $(listCssQuery)
     const list = pokeListContainer.querySelector('.list')
     setValue(list, '')
@@ -119,9 +128,9 @@ const makePoke = (pokeModel, initialLevel) => {
   }
   const combat = {
     mutable: {
-      hp: hp(poke.stats[0].hp) * 3
+      hp: hp(poke.stats[0].hp) * 4
     }
-  , maxHp: () => hp(poke.stats[0].hp) * 3
+  , maxHp: () => hp(poke.stats[0].hp) * 4
   , attack: () => statValue(poke.stats[0].attack)
   , defense: () => statValue(poke.stats[0].defense)
   , spAttack: () => statValue(poke.stats[0]['sp atk'])
@@ -147,6 +156,7 @@ const makePoke = (pokeModel, initialLevel) => {
                                                     || 0
   , baseExp: () => Number(poke.exp[0]['base exp'])
   , heal: () => combat.mutable.hp = combat.maxHp()
+  , allCombat: () => combat
   }
   return poke_interface
 }
@@ -218,7 +228,9 @@ const makeCombatLoop = (enemy, player, dom) => {
   const dealDamage = (attacker, defender, who) => {
     if (attacker.alive() && defender.alive()) {
       // both alive
-      defender.takeDamage(attacker.attack())
+      const damageMultiplier = TYPES[attacker.type()][defender.type()]
+      console.log(damageMultiplier)
+      defender.takeDamage(attacker.attack() * damageMultiplier)
       if (who === 'player') {
         playerTimer()
       }

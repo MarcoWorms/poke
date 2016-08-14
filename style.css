@@ -38,25 +38,16 @@ progress {
   border-radius: 5px;
 }
 
-.poke {
-  text-align: center;
-}
-
 .poke .inner {
   position: relative;
   line-height: 25px;
-}
-
-.poke .name {
-
-}
-
-.poke .img {
-
-}
-
-.poke .hp {
   font-size: 12px;
+  text-align: center;
+}
+
+.poke .inner .name {
+  font-size: 16px;
+
 }
 
 #player {
@@ -65,6 +56,10 @@ progress {
 
 #enemy {
   float: left;
+}
+
+#enemy .status {
+  display: none;
 }
 
 #playerPokes {
