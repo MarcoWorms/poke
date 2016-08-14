@@ -3,6 +3,7 @@
   global: TYPES
   global: EXP_TABLE
   global: ROUTES
+  global: EVOLUTIONS
 */
 'use strict'
 
@@ -17,90 +18,90 @@ EXP_TABLE["Fast"] = [1, 2, 6, 21, 51, 100, 172, 274, 409, 583, 800, 1064, 1382, 
 
 var currentRouteId = 'starter'
 const ROUTES = {
-  starter: {
-    name: 'Starter Area'
-  , pokes: ['Caterpie', 'Weedle']
-  , maxLevel: 2
-  , unlocked: true
-  }
-, starter2: {
-    name: 'Starter Area 2'
-  , pokes: ['Rattata', 'Pidgey', 'Spearow']
-  , maxLevel: 5
-  , unlocked: true
-  }
-, cavern1: {
-    name: 'Cavern'
-  , pokes: ['Zubat', 'Diglett', 'Machop', 'Abra']
-  , maxLevel: 12
-  , unlocked: true
-  }
-, rock_arena: {
-    name: 'Rock Arena'
-  , pokes: ['Geodude', 'Onix']
-  , maxLevel: 20
-  , unlocked: true
-  }
-, fields: {
-    name: 'Fields'
-  , pokes: ['Sandshrew', 'Nidoran f', 'Nidoran m', 'Venonat', 'Vulpix']
-  , maxLevel: 26
-  , unlocked: true
-  }
-, water_arena: {
-    name: 'Water Arena'
-  , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea']
-  , maxLevel: 34
-  , unlocked: true
-  }
-, fields2: {
-    name: 'Fields 2'
-  , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans']
-  , maxLevel: 39
-  , unlocked: true
-  }
-, thunder_arena: {
-    name: 'Thunder Arena'
-  , pokes: ['Pikachu', 'Magnemite', 'Voltorb']
-  , maxLevel: 43
-  , unlocked: true
-  }
-, mtmoon: {
-    name: 'Mt. Moon'
-  , pokes: ['Jigglypuff', 'Clefairy', 'Voltorb']
-  , maxLevel: 52
-  , unlocked: true
-  }
-, fields3: {
-    name: 'Fields 3'
-  , pokes: ['Growlithe', 'Drowzee', 'Cubone', 'Rhyhorn', 'Ponyta']
-  , maxLevel: 55
-  , unlocked: true
-  }
-, scareland: {
-    name: 'Scareland'
-  , pokes: ['Gastly', 'Haunter', 'Gengar']
-  , maxLevel: 60
-  , unlocked: true
-  }
-, fields4: {
-    name: 'Fields 4'
-  , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing']
-  , maxLevel: 68
-  , unlocked: true
-  }
-, fields5: {
-    name: 'Fields 5'
-  , pokes: ['Tangela', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz']
-  , maxLevel: 75
-  , unlocked: true
-  }
-, birds: {
-    name: 'Birds'
-  , pokes: ['Articuno', 'Zapdos', 'Moltres']
-  , maxLevel: 99
-  , unlocked: true
-  }
+    starter: {
+      name: 'Starter Area'
+    , pokes: ['Caterpie', 'Weedle']
+    , maxLevel: 2
+    , unlocked: true
+    }
+  , starter2: {
+      name: 'Starter Area 2'
+    , pokes: ['Rattata', 'Pidgey', 'Spearow']
+    , maxLevel: 5
+    , unlocked: true
+    }
+  , cavern1: {
+      name: 'Cavern'
+    , pokes: ['Zubat', 'Diglett', 'Machop', 'Abra']
+    , maxLevel: 12
+    , unlocked: true
+    }
+  , rock_arena: {
+      name: 'Rock Arena'
+    , pokes: ['Geodude', 'Onix']
+    , maxLevel: 20
+    , unlocked: true
+    }
+  , fields: {
+      name: 'Fields'
+    , pokes: ['Sandshrew', 'Nidoran f', 'Nidoran m', 'Venonat', 'Vulpix']
+    , maxLevel: 26
+    , unlocked: true
+    }
+  , water_arena: {
+      name: 'Water Arena'
+    , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea']
+    , maxLevel: 34
+    , unlocked: true
+    }
+  , fields2: {
+      name: 'Fields 2'
+    , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans']
+    , maxLevel: 39
+    , unlocked: true
+    }
+  , thunder_arena: {
+      name: 'Thunder Arena'
+    , pokes: ['Pikachu', 'Magnemite', 'Voltorb']
+    , maxLevel: 43
+    , unlocked: true
+    }
+  , mtmoon: {
+      name: 'Mt. Moon'
+    , pokes: ['Jigglypuff', 'Clefairy', 'Voltorb']
+    , maxLevel: 52
+    , unlocked: true
+    }
+  , fields3: {
+      name: 'Fields 3'
+    , pokes: ['Growlithe', 'Drowzee', 'Cubone', 'Rhyhorn', 'Ponyta']
+    , maxLevel: 55
+    , unlocked: true
+    }
+  , scareland: {
+      name: 'Scareland'
+    , pokes: ['Gastly', 'Haunter', 'Gengar']
+    , maxLevel: 60
+    , unlocked: true
+    }
+  , fields4: {
+      name: 'Fields 4'
+    , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing']
+    , maxLevel: 68
+    , unlocked: true
+    }
+  , fields5: {
+      name: 'Fields 5'
+    , pokes: ['Tangela', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz']
+    , maxLevel: 75
+    , unlocked: true
+    }
+  , birds: {
+      name: 'Birds'
+    , pokes: ['Articuno', 'Zapdos', 'Moltres']
+    , maxLevel: 99
+    , unlocked: true
+    }
 }
 
 const RNG = (func, chance) => {
@@ -188,6 +189,8 @@ const makeDomHandler = () => {
             style="
               color: red;
               text-decoration: none;
+              position: relative;
+              left: -5px;
             "
           >
             X
@@ -197,10 +200,16 @@ const makeDomHandler = () => {
            onclick="userInteractions.changePokemon(${index})"
            style="color: ${poke.alive()
                             && (poke === player.activePoke()
-                              && 'rgb(111, 217, 5)'
+                              && 'rgb(80, 157, 2)'
                               ||'rgb(66, 116, 10)')
                             || 'red'
                           };
+                  ${poke === player.activePoke()
+                    && 'border: solid 1px rgb(139, 142, 4);'
+                      +'border-radius: 2px;'
+                    ||''
+                  }
+                  text-decoration: none;
           "
 
            >
@@ -263,7 +272,7 @@ const makeDomHandler = () => {
 }
 
 const makePoke = (pokeModel, initialLevel, initialExp) => {
-  const poke = cloneJsonObject(pokeModel)
+  var poke = cloneJsonObject(pokeModel)
   const expTable = EXP_TABLE[poke.stats[0]["growth rate"]]
   var exp = initialLevel
               && expTable[initialLevel - 1]
@@ -278,6 +287,17 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   }
   const hp = (rawHp) => {
     return Math.floor(((rawHp * currentLevel()) / 50) + 10)
+  }
+  const tryEvolve = () => {
+    const pokemonHasEvolution =
+      EVOLUTIONS[poke.pokemon[0].Pokemon] !== undefined
+    if (pokemonHasEvolution) {
+      const evolution = EVOLUTIONS[poke.pokemon[0].Pokemon].to
+      const levelToEvolve = Number(EVOLUTIONS[poke.pokemon[0].Pokemon].level)
+      if (currentLevel() >= levelToEvolve) {
+        poke = cloneJsonObject(pokeByName(evolution))
+      }
+    }
   }
   const combat = {
     mutable: {
@@ -305,7 +325,10 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
     , max: () => combat.maxHp()
     }
   , alive: () => combat.mutable.hp > 0
-  , giveExp: (ammount) => exp += ammount
+  , giveExp: (ammount) => {
+    exp += ammount
+    tryEvolve()
+  }
   , currentExp: () => exp
   , nextLevelExp: () => expTable[currentLevel()]
   , thisLevelExp: () => expTable[currentLevel() - 1]
@@ -517,7 +540,6 @@ const enemy = makeEnemy()
 enemy.generateNew(ROUTES[currentRouteId])
 
 const player = makePlayer()
-
 if (localStorage.getItem(`totalPokes`) !== null) {
   player.loadPokes()
 } else {

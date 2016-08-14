@@ -1,4 +1,4 @@
-var evolutions = {
+const EVOLUTIONS = {
   "Bulbasaur":{
     "level":"16",
     "to":"Ivysaur"

@@ -21,14 +21,6 @@ ul {
   -webkit-margin-after: 0 em;
 }
 
-progress {
-  box-sizing: border-box;
-  width: 70px;
-}
-.expBar {
-  width: 140px;
-}
-
 .container {
   display: block;
   position: relative;
@@ -49,8 +41,8 @@ progress {
 }
 
 .poke .inner .name {
-  font-size: 16px;
-
+  font-size: 18px;
+  font-weight: 500;
 }
 
 #enemy {
@@ -94,4 +86,86 @@ progress {
   height: 30px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+
+
+/* progressbar reset*/
+progress,          /* All HTML5 progress enabled browsers */
+progress[role]     /* polyfill */
+{
+
+	/* Turns off styling - not usually needed, but good to know. */
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+
+	/* gets rid of default border in Firefox and Opera. */
+	border: none;
+
+	/* Needs to be in here for Safari polyfill so background images work as expected. */
+	background-size: auto;
+
+	/* Dimensions */
+	width: 400px;
+	height: 60px;
+
+}
+
+/* Polyfill */
+progress[role]:after {
+	background-image: none; /* removes default background from polyfill */
+}
+
+/* Ensure fallback text doesn't appear in polyfill */
+progress[role] strong {
+	display: none;
+}
+
+/* progress bg */
+
+progress,                          /* Firefox  */
+progress[role][aria-valuenow] {    /* Polyfill */
+   background: rgb(6, 64, 65) !important; /* !important is needed by the polyfill */
+}
+
+/* Chrome */
+progress::-webkit-progress-bar {
+    background: rgb(6, 64, 65);
+}
+
+/* progress value */
+
+/* IE10 */
+progress {
+    color: rgb(15, 238, 141);
+}
+
+/* Firefox */
+progress::-moz-progress-bar {
+    background: rgb(15, 238, 141);
+}
+
+/* Chrome */
+progress::-webkit-progress-value {
+    background: rgb(15, 238, 141);
+    border-radius: 0 10px 0 0;
+}
+
+/* Polyfill */
+progress[aria-valuenow]:before  {
+    background: rgb(15, 238, 141);
+}
+
+
+progress {
+  width: 70px;
+  height: 5px;
+  position: relative;
+  top: -3px;
+  box-shadow: 0 0 2px black;
+}
+
+progress.expBar {
+  width: 120px;
 }
