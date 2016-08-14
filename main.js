@@ -355,9 +355,11 @@ const makePlayer = () => {
     return canHeal()
     }
   , deletePoke: (index) => {
-      pokemons.splice(index, 1)
-      if (index <= activePoke) {
-        activePoke -= 1
+      if (index !== activePoke) {
+        pokemons.splice(index, 1)
+        if (index < activePoke) {
+          activePoke -= 1
+        }
       }
     }
   , savePokes: () => {
