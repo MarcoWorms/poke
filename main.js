@@ -548,7 +548,7 @@ const player = makePlayer()
 if (localStorage.getItem(`totalPokes`) !== null) {
   player.loadPokes()
 } else {
-  player.addPoke(makePoke(pokeById(1), 5))
+  player.addPoke(makePoke(pokeById(randomArrayElement([1, 4, 7])), 5))
 }
 
 const dom = makeDomHandler()
