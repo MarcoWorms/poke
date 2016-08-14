@@ -2,7 +2,7 @@
   global: POKEDEX
   global: TYPES
   global: EXP_TABLE
-  global: ENEMIES_RECIPES
+  global: ROUTES
 */
 'use strict'
 
@@ -15,10 +15,31 @@ EXP_TABLE["Medium Slow"] = [0, -53, 9, 57, 96, 135, 179, 236, 314, 419, 560, 742
 EXP_TABLE["Medium Fast"] = [0, 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197, 2744, 3375, 4096, 4913, 5832, 6859, 8000, 9261, 10648, 12167, 13824, 15625, 17576, 19683, 21952, 24389, 27000, 29791, 32768, 35937, 39304, 42875, 46656, 50653, 54872, 59319, 64000, 68921, 74088, 79507, 85184, 91125, 97336, 103823, 110592, 117649, 125000, 132651, 140608, 148877, 157464, 166375, 175616, 185193, 195112, 205379, 216000, 226981, 238328, 250047, 262144, 274625, 287496, 300763, 314432, 328509, 343000, 357911, 373248, 389017, 405224, 421875, 438976, 456533, 474552, 493039, 512000, 531441, 551368, 571787, 592704, 614125, 636056, 658503, 681472, 704969, 729000, 753571, 778688, 804357, 830584, 857375, 884736, 912673, 941192, 970299, 1000000]
 EXP_TABLE["Fast"] = [0, 0, 6, 21, 51, 100, 172, 274, 409, 583, 800, 1064, 1382, 1757, 2195, 2700, 3276, 3930, 4665, 5487, 6400, 7408, 8518, 9733, 11059, 12500, 14060, 15746, 17561, 19511, 21600, 23832, 26214, 28749, 31443, 34300, 37324, 40522, 43897, 47455, 51200, 55136, 59270, 63605, 68147, 72900, 77868, 83058, 88473, 94119, 100000, 106120, 112486, 119101, 125971, 133100, 140492, 148154, 156089, 164303, 172800, 181584, 190662, 200037, 209715, 219700, 229996, 240610, 251545, 262807, 274400, 286328, 298598, 311213, 324179, 337500, 351180, 365226, 379641, 394431, 409600, 425152, 441094, 457429, 474163, 491300, 508844, 526802, 545177, 563975, 583200, 602856, 622950, 643485, 664467, 685900, 707788, 730138, 752953, 776239, 800000]
 
-const ENEMIES_RECIPES = {
-  easy: {
-    pokes: ['Rattata', 'Pidgey']
+var currentRouteId = 'starter'
+const ROUTES = {
+  starter: {
+    name: 'Starter Area'
+  , pokes: ['Caterpie', 'Weedle']
+  , maxLevel: 2
+  , unlocked: true
+  }
+, starter2: {
+    name: 'Starter Area 2'
+  , pokes: ['Rattata', 'Pidgey', 'Caterpie', 'Weedle']
   , maxLevel: 5
+  , unlocked: true
+  }
+, cavern1: {
+    name: 'Cavern'
+  , pokes: ['Zubat', 'Diglett', 'Machop']
+  , maxLevel: 12
+  , unlocked: true
+  }
+, rock_arena: {
+    name: 'Rock Arena'
+  , pokes: ['Geodude', 'Onyx']
+  , maxLevel: 20
+  , unlocked: false
   }
 }
 
@@ -46,7 +67,7 @@ const makeDomHandler = () => {
   const getValue = (domElement) => {
     return domElement.innerHTML
   }
-  const seProp = (domElement, attribute, newValue) => {
+  const setProp = (domElement, attribute, newValue) => {
       domElement[attribute] = newValue
   }
   const renderPokeOnContainer = (id, poke) => {
@@ -67,20 +88,31 @@ const makeDomHandler = () => {
     , status: container.querySelector('.status')
     }
     setValue(domElements.name, poke.pokeName() + ' (' + poke.level() + ')')
-    seProp(domElements.img, 'src', poke.image())
+    setProp(domElements.img, 'src', poke.image())
     setValue(domElements.hp, poke.lifeAsText())
-    seProp(domElements.hpBar, 'value', poke.life.current())
-    seProp(domElements.hpBar, 'max', poke.life.max())
+    setProp(domElements.hpBar, 'value', poke.life.current())
+    setProp(domElements.hpBar, 'max', poke.life.max())
     setValue(domElements.status, pokeStatusAsText(poke))
   }
-  const renderPokeList = (id, pokemons) => {
+  const healElement = $('#heal')
+  const renderHeal = (canHeal) => {
+    if (canHeal === true) {
+      setProp(healElement, 'disabled', false)
+      setValue(healElement, 'Heal!')
+    }
+    if (typeof canHeal === 'number') {
+      setProp(healElement, 'disabled', true)
+      setValue(healElement, 'Heal: ' + Math.floor(((canHeal/30000)*100)) + '%')
+    }
+  }
+  const renderPokeList = (id, list) => {
     const listCssQuery = '.container.list' + '#' + id
-    const pokeListContainer = $(listCssQuery)
-    const list = pokeListContainer.querySelector('.list')
-    setValue(list, '')
-    pokemons.forEach((poke, index) => {
+    const listContainer = $(listCssQuery)
+    const listElement = listContainer.querySelector('.list')
+    setValue(listElement, '')
+    list.forEach((poke, index) => {
       setValue(
-        list
+        listElement
       , `<li>
            <a
            href="#"
@@ -97,6 +129,37 @@ const makeDomHandler = () => {
       )
     })
   }
+  const renderRouteList = (id, routes) => {
+    const listCssQuery = '.container.list' + '#' + id
+    const listContainer = $(listCssQuery)
+    const listElement = listContainer.querySelector('.list')
+    setValue(listElement, '')
+    Object.keys(routes).forEach((routeId) => {
+      const route = routes[routeId]
+      setValue(
+        listElement
+      , `<li>
+           <a
+           href="#"
+           onclick="${route.unlocked
+                      && 'userInteractions.changeRoute(\'' + routeId + '\')'
+                      || ''
+                    }"
+           "
+           style="color: ${route.unlocked
+                            && (routeId === currentRouteId
+                              && 'rgb(51, 111, 22)'
+                              || 'rgb(53, 50, 103)' )
+                            || 'rgb(167, 167, 167)'
+                          }"
+           >
+             ${route.name}
+           </a>
+        <li>`
+      , true
+      )
+    })
+  }
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
     , () => { userInteractions.healAllPlayerPokemons() }
@@ -106,6 +169,8 @@ const makeDomHandler = () => {
   return {
     renderPokeOnContainer: renderPokeOnContainer
   , renderPokeList: renderPokeList
+  , renderRouteList: renderRouteList
+  , renderHeal: renderHeal
   }
 }
 
@@ -165,6 +230,15 @@ const makeRandomPoke = (level) => makePoke(randomArrayElement(POKEDEX), level)
 const makePlayer = () => {
   const pokemons = []
   var activePoke = 0
+  var lastHeal = Date.now()
+  const canHeal = () => {
+    if ((Date.now() - lastHeal) > 30000) {
+      return true
+    }
+    else {
+      return Date.now() - lastHeal
+    }
+  }
   const player_interface = {
     addPoke: (poke) => {
       pokemons.push(poke)
@@ -174,7 +248,15 @@ const makePlayer = () => {
     }
   , activePoke: () => pokemons[activePoke]
   , pokemons: () => pokemons
-  , healAllPokemons: () => pokemons.forEach((poke) => poke.heal())
+  , canHeal: canHeal
+  , healAllPokemons: () => {
+    if (canHeal() === true) {
+      pokemons.forEach((poke) => poke.heal())
+      lastHeal = Date.now()
+      return "healed"
+    }
+    return canHeal()
+  }
   }
   return player_interface
 }
@@ -201,8 +283,15 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
       renderView(dom, enemy, player)
     },
     healAllPlayerPokemons: () => {
-      player.healAllPokemons()
-      combatLoop.changePlayerPoke(player.activePoke())
+      if (player.healAllPokemons() === "healed") {
+        combatLoop.refresh()
+        renderView(dom, enemy, player)
+      }
+    },
+    changeRoute: (newRouteId) => {
+      currentRouteId = newRouteId
+      enemy.generateNew(ROUTES[newRouteId])
+      combatLoop.changeEnemyPoke(enemy.activePoke())
       renderView(dom, enemy, player)
     }
   }
@@ -251,9 +340,8 @@ const makeCombatLoop = (enemy, player, dom) => {
           player.addPoke.bind(null, enemy.activePoke())
         , 1
         )
-
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
-        enemy.generateNew(ENEMIES_RECIPES.easy)
+        enemy.generateNew(ROUTES[currentRouteId])
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
@@ -280,6 +368,10 @@ const makeCombatLoop = (enemy, player, dom) => {
       playerActivePoke = newPoke
       refresh()
     }
+  , changeEnemyPoke: (newPoke) => {
+      enemyActivePoke = newPoke
+      refresh()
+    }
   , refresh: refresh
   }
 }
@@ -287,19 +379,20 @@ const makeCombatLoop = (enemy, player, dom) => {
 const renderView = (dom, enemy, player) => {
   dom.renderPokeOnContainer('enemy', enemy.activePoke())
   dom.renderPokeOnContainer('player', player.activePoke())
-  dom.renderPokeList('playerPokes', player.pokemons())
+  dom.renderPokeList('playerPokes', player.pokemons(), player.canHeal())
+  dom.renderRouteList('areasList', ROUTES)
 }
 
 // main
 
 //var enemy = pokeAleatorio(3)
 const enemy = makeEnemy()
-enemy.generateNew(ENEMIES_RECIPES.easy)
+enemy.generateNew(ROUTES[currentRouteId])
 
 const player = makePlayer()
-player.addPoke(makePoke(pokeById(1), 6))
-player.addPoke(makePoke(pokeByName('Charmander'), 6))
-player.addPoke(makePoke(pokeByName('Squirtle'), 6))
+player.addPoke(makePoke(pokeById(1), 3))
+player.addPoke(makePoke(pokeByName('Charmander'), 3))
+player.addPoke(makePoke(pokeByName('Squirtle'), 3))
 const dom = makeDomHandler()
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
@@ -307,3 +400,8 @@ const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
 renderView(dom, enemy, player)
 
 combatLoop.init()
+
+requestAnimationFrame(function renderTime() {
+  dom.renderHeal(player.canHeal())
+  requestAnimationFrame(renderTime)
+})

@@ -6440,7 +6440,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "53"
          }
@@ -6450,7 +6450,7 @@ const POKEDEX = [
             "species": "Worm Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 0 in. (0.30m)"
          }
@@ -6517,7 +6517,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "72"
          }
@@ -6527,7 +6527,7 @@ const POKEDEX = [
             "species": "Cocoon Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 4 in. (0.71m)"
          }
@@ -6776,7 +6776,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "160"
          }
@@ -6786,7 +6786,7 @@ const POKEDEX = [
             "species": "Butterfly Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 7 in. (1.09m)"
          }
@@ -6866,7 +6866,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "52"
          }
@@ -6876,7 +6876,7 @@ const POKEDEX = [
             "species": "Hairy Bug Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 0 in. (0.30m)"
          }
@@ -6943,7 +6943,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "71"
          }
@@ -6953,7 +6953,7 @@ const POKEDEX = [
             "species": "Cocoon Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 0 in. (0.61m)"
          }
@@ -22379,7 +22379,7 @@ const POKEDEX = [
             "move accuracy": "50"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "63"
          }
@@ -22389,7 +22389,7 @@ const POKEDEX = [
             "species": "Fox Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 0 in. (0.61m)"
          }
@@ -22508,7 +22508,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "178"
          }
@@ -22518,7 +22518,7 @@ const POKEDEX = [
             "species": "Fox Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 7 in. (1.09m)"
          }
@@ -28703,7 +28703,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "75"
          }
@@ -28713,7 +28713,7 @@ const POKEDEX = [
             "species": "Insect Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 3 in. (0.99m)"
          }
@@ -29027,7 +29027,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "138"
          }
@@ -29037,7 +29037,7 @@ const POKEDEX = [
             "species": "Poison Moth Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 11 in. (1.50m)"
          }
@@ -38317,7 +38317,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "75"
          }
@@ -38327,7 +38327,7 @@ const POKEDEX = [
             "species": "Psi Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 11 in. (0.89m)"
          }
@@ -38576,7 +38576,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "145"
          }
@@ -38586,7 +38586,7 @@ const POKEDEX = [
             "species": "Psi Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 3 in. (1.30m)"
          }
@@ -38835,7 +38835,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "186"
          }
@@ -38845,7 +38845,7 @@ const POKEDEX = [
             "species": "Psi Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 11 in. (1.50m)"
          }
@@ -49794,7 +49794,7 @@ const POKEDEX = [
             "move accuracy": "50"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "89"
          }
@@ -49804,7 +49804,7 @@ const POKEDEX = [
             "species": "Magnet Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 0 in. (0.30m)"
          }
@@ -50131,7 +50131,7 @@ const POKEDEX = [
             "move accuracy": "50"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "161"
          }
@@ -50141,7 +50141,7 @@ const POKEDEX = [
             "species": "Magnet Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 3 in. (0.99m)"
          }
@@ -56058,7 +56058,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "95"
          }
@@ -56068,7 +56068,7 @@ const POKEDEX = [
             "species": "Gas Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 3 in. (1.30m)"
          }
@@ -56330,7 +56330,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "126"
          }
@@ -56340,7 +56340,7 @@ const POKEDEX = [
             "species": "Gas Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "5 ft. 3 in. (1.60m)"
          }
@@ -58285,7 +58285,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "102"
          }
@@ -58295,7 +58295,7 @@ const POKEDEX = [
             "species": "Hypnosis Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 3 in. (0.99m)"
          }
@@ -58635,7 +58635,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "165"
          }
@@ -58645,7 +58645,7 @@ const POKEDEX = [
             "species": "Hypnosis Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "5â€²3â€³ (1.60m)"
          }
@@ -60324,7 +60324,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "103"
          }
@@ -60334,7 +60334,7 @@ const POKEDEX = [
             "species": "Ball Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 8 in. (0.51m)"
          }
@@ -60622,7 +60622,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "150"
          }
@@ -60632,7 +60632,7 @@ const POKEDEX = [
             "species": "Ball Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 11 in. (1.19m)"
          }
@@ -66047,7 +66047,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "114"
          }
@@ -66057,7 +66057,7 @@ const POKEDEX = [
             "species": "Poison Gas Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 0 in. (0.61m)"
          }
@@ -66319,7 +66319,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "173"
          }
@@ -66329,7 +66329,7 @@ const POKEDEX = [
             "species": "Poison Gas Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "3 ft. 11 in. (1.19m)"
          }
@@ -74278,7 +74278,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "136"
          }
@@ -74288,7 +74288,7 @@ const POKEDEX = [
             "species": "Barrier Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 3 in. (1.30m)"
          }
@@ -75294,7 +75294,7 @@ const POKEDEX = [
             "move accuracy": "70"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "137"
          }
@@ -75304,7 +75304,7 @@ const POKEDEX = [
             "species": "Human Shape Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "4 ft. 7 in. (1.40m)"
          }
@@ -78201,7 +78201,7 @@ const POKEDEX = [
             "move accuracy": "100"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "20"
          }
@@ -78211,7 +78211,7 @@ const POKEDEX = [
             "species": "Fish Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 11 in. (0.89m)"
          }
@@ -79663,7 +79663,7 @@ const POKEDEX = [
             "move accuracy": "-"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "61"
          }
@@ -79673,7 +79673,7 @@ const POKEDEX = [
             "species": "Transform Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 0 in. (0.30m)"
          }
@@ -79935,7 +79935,7 @@ const POKEDEX = [
             "move accuracy": "Ã¢Ë†Å¾"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "92"
          }
@@ -79945,7 +79945,7 @@ const POKEDEX = [
             "species": "Evolution Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "1 ft. 0 in. (0.30m)"
          }
@@ -82121,7 +82121,7 @@ const POKEDEX = [
             "move accuracy": "50"
          }
       ],
-      "hms": [
+      "exp": [
          {
             "base exp": "130"
          }
@@ -82131,7 +82131,7 @@ const POKEDEX = [
             "species": "Virtual Pokemon"
          }
       ],
-      "exp": [
+      "newHeight": [
          {
             "height": "2 ft. 7 in. (0.79m)"
          }

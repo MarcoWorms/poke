@@ -16,7 +16,7 @@ body {
 
 ul {
   list-style-type: none;
-  padding: 10px;
+  padding: 0px;
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0 em;
 }
@@ -50,16 +50,29 @@ progress {
 
 }
 
-#player {
-  float: right;
-}
-
 #enemy {
   float: left;
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+  margin-top: 10px;
+}
+
+#areasList {
+  float: left;
+  min-height: none;
+  max-height: none;
+  height: 400px;
+  text-align: center;
 }
 
 #enemy .status {
   display: none;
+}
+
+#player {
+  float: right;
+  border-radius: 10px 0 0 10px;
+  border-right: none;
 }
 
 #playerPokes {
@@ -67,5 +80,12 @@ progress {
   min-height: none;
   max-height: none;
   height: 400px;
-  margin-left: 10px;
+  text-align: center;
+}
+
+#heal {
+  width: 100px;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
