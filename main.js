@@ -25,13 +25,13 @@ const ROUTES = {
   }
 , starter2: {
     name: 'Starter Area 2'
-  , pokes: ['Rattata', 'Pidgey', 'Caterpie', 'Weedle']
+  , pokes: ['Rattata', 'Pidgey', 'Spearow']
   , maxLevel: 5
   , unlocked: true
   }
 , cavern1: {
     name: 'Cavern'
-  , pokes: ['Zubat', 'Diglett', 'Machop']
+  , pokes: ['Zubat', 'Diglett', 'Machop', 'Abra']
   , maxLevel: 12
   , unlocked: true
   }
@@ -39,12 +39,55 @@ const ROUTES = {
     name: 'Rock Arena'
   , pokes: ['Geodude', 'Onyx']
   , maxLevel: 20
-  , unlocked: false
+  , unlocked: true
+  }
+, fields: {
+    name: 'Fields'
+  , pokes: ['Sandshrew', 'Nidoran f', 'Nidoran m', 'Venonat', 'Vulpix']
+  , maxLevel: 26
+  , unlocked: true
+  }
+, water_arena: {
+    name: 'Water Arena'
+  , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea']
+  , maxLevel: 34
+  , unlocked: true
+  }
+, fields2: {
+    name: 'Fields 2'
+  , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans']
+  , maxLevel: 39
+  , unlocked: true
+  }
+, thunder_arena: {
+    name: 'Thunder Arena'
+  , pokes: ['Pikachu', 'Magnemite', 'Voltorb']
+  , maxLevel: 43
+  , unlocked: true
+  }
+, mtmoon: {
+    name: 'Mt. Moon'
+  , pokes: ['Jigglypuff', 'Clefairy', 'Voltorb']
+  , maxLevel: 52
+  , unlocked: true
+  }
+, fields3: {
+    name: 'Fields 3'
+  , pokes: ['Growlithe', 'Drowzee', 'Cubone', 'Rhyhorn', 'Ponyta']
+  , maxLevel: 55
+  , unlocked: true
+  }
+, scareland: {
+    name: 'Scareland'
+  , pokes: ['Gastly', 'Haunter', 'Gengar']
+  , maxLevel: 60
+  , unlocked: true
   }
 }
 
 const RNG = (func, chance) => {
-  if ((Math.random() * 100) < chance) {
+  const rnd = Math.random() * 100
+  if (rnd < chance) {
     func()
   }
 }
@@ -70,7 +113,8 @@ const makeDomHandler = () => {
   const setProp = (domElement, attribute, newValue) => {
       domElement[attribute] = newValue
   }
-  const renderPokeOnContainer = (id, poke) => {
+  const renderPokeOnContainer = (id, poke, face) => {
+    face = face || 'front'
     const pokeStatusAsText = (poke) => {
       var output = ''
       output += 'Attack Speed: ' + poke.attackSpeed()/1000 + '<br>'
@@ -88,7 +132,7 @@ const makeDomHandler = () => {
     , status: container.querySelector('.status')
     }
     setValue(domElements.name, poke.pokeName() + ' (' + poke.level() + ')')
-    setProp(domElements.img, 'src', poke.image())
+    setProp(domElements.img, 'src', poke.image()[face])
     setValue(domElements.hp, poke.lifeAsText())
     setProp(domElements.hpBar, 'value', poke.life.current())
     setProp(domElements.hpBar, 'max', poke.life.max())
@@ -120,7 +164,9 @@ const makeDomHandler = () => {
            style="color: ${poke.alive()
                             && 'green'
                             || 'red'
-                          }"
+                          };
+          "
+
            >
              ${poke.pokeName()} (${poke.level()})
            </a>
@@ -139,21 +185,27 @@ const makeDomHandler = () => {
       setValue(
         listElement
       , `<li>
-           <a
-           href="#"
-           onclick="${route.unlocked
-                      && 'userInteractions.changeRoute(\'' + routeId + '\')'
-                      || ''
-                    }"
+          <a
+          href="#"
+          onclick="${route.unlocked
+                    && 'userInteractions.changeRoute(\'' + routeId + '\')'
+                    || ''
+                  }"
+          "
+            style="
+            color: ${route.unlocked
+                      && (routeId === currentRouteId
+                        && 'rgb(51, 111, 22)'
+                        || 'rgb(53, 50, 103)' )
+                      || 'rgb(167, 167, 167)'
+                    };
+            font-weight: ${routeId === currentRouteId
+                          && 'bold'
+                          || 'normal'
+                          };
            "
-           style="color: ${route.unlocked
-                            && (routeId === currentRouteId
-                              && 'rgb(51, 111, 22)'
-                              || 'rgb(53, 50, 103)' )
-                            || 'rgb(167, 167, 167)'
-                          }"
            >
-             ${route.name}
+             ${route.name + ' (' + route.maxLevel + ')'}
            </a>
         <li>`
       , true
@@ -204,7 +256,12 @@ const makePoke = (pokeModel, initialLevel) => {
   }
   const poke_interface = {
     pokeName: () => poke.pokemon[0].Pokemon
-  , image: () => poke.images.front
+  , image: () => {
+    return {
+      front: poke.images.front
+    , back: poke.images.back
+    }
+  }
   , type: () => poke.stats[0].types.text
   , lifeAsText: () => '' + combat.mutable.hp + ' / ' + combat.maxHp()
   , life: {
@@ -340,7 +397,7 @@ const makeCombatLoop = (enemy, player, dom) => {
           player.addPoke.bind(null, enemy.activePoke())
         , 1
         )
-        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 8) + enemyActivePoke.level())
+        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 10) + enemyActivePoke.level())
         enemy.generateNew(ROUTES[currentRouteId])
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
@@ -378,7 +435,7 @@ const makeCombatLoop = (enemy, player, dom) => {
 
 const renderView = (dom, enemy, player) => {
   dom.renderPokeOnContainer('enemy', enemy.activePoke())
-  dom.renderPokeOnContainer('player', player.activePoke())
+  dom.renderPokeOnContainer('player', player.activePoke(), 'back')
   dom.renderPokeList('playerPokes', player.pokemons(), player.canHeal())
   dom.renderRouteList('areasList', ROUTES)
 }
@@ -390,9 +447,9 @@ const enemy = makeEnemy()
 enemy.generateNew(ROUTES[currentRouteId])
 
 const player = makePlayer()
-player.addPoke(makePoke(pokeById(1), 3))
-player.addPoke(makePoke(pokeByName('Charmander'), 3))
-player.addPoke(makePoke(pokeByName('Squirtle'), 3))
+player.addPoke(makePoke(pokeById(1), 5))
+//player.addPoke(makePoke(pokeByName('Charmander'), 3))
+//player.addPoke(makePoke(pokeByName('Squirtle'), 3))
 const dom = makeDomHandler()
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)

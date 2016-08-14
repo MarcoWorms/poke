@@ -3,7 +3,7 @@ body {
 }
 
 #gameContainer {
-  font-family: arial;
+  font-family: 'Lato', sans-serif;
   color: #111111;
   width: 600px;
   margin: auto;
@@ -51,18 +51,18 @@ progress {
 }
 
 #enemy {
-  float: left;
-  border-radius: 0 10px 10px 0;
-  border-left: none;
-  margin-top: 10px;
+  float: right;
+  border-radius: 10px 0 0 10px;
+  border-right: none;
 }
 
 #areasList {
-  float: left;
+  float: right;
   min-height: none;
   max-height: none;
   height: 400px;
   text-align: center;
+  border-radius: 0 5px 5px 5px;
 }
 
 #enemy .status {
@@ -70,13 +70,14 @@ progress {
 }
 
 #player {
-  float: right;
-  border-radius: 10px 0 0 10px;
-  border-right: none;
+  float: left;
+  border-radius: 0 10px 10px 0;
+  border-left: none;
+  margin-top: 20px;
 }
 
 #playerPokes {
-  float: right;
+  float: left;
   min-height: none;
   max-height: none;
   height: 400px;
