@@ -34,7 +34,7 @@ progress {
   position: relative;
   width: 160px;
   min-height: 100px;
-  max-height: 200px;
+  max-height: 400px;
   background-color: rgb(217, 217, 217);
   border: solid 1px rgb(10, 0, 130);
   box-shadow: 0 0 2px rgb(10, 0, 130);
