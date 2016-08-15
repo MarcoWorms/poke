@@ -546,7 +546,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
-        dom.renderPokeOnContainer('player', player.activePoke())
+        dom.renderPokeOnContainer('player', player.activePoke(), 'back')
       } else {
         const playerLivePokesIndexes = player.pokemons().filter((poke, index) => {
           if (poke.alive()) {
