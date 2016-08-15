@@ -261,6 +261,11 @@ const makeDomHandler = () => {
       )
     })
   }
+  const attackAnimation = (id, direction) => {
+    const toAnimate = $('#' + id)
+    toAnimate.classList = 'img attacked-' + direction
+    window.setTimeout(() => toAnimate.classList = 'img', 100)
+  }
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
     , () => { userInteractions.healAllPlayerPokemons() }
@@ -274,7 +279,6 @@ const makeDomHandler = () => {
     , () => { userInteractions.changeCatchOption($(`#enableCatch`).checked) }
     )
 
-
   }
   bindEvents()
   return {
@@ -282,6 +286,7 @@ const makeDomHandler = () => {
   , renderPokeList: renderPokeList
   , renderRouteList: renderRouteList
   , renderHeal: renderHeal
+  , attackAnimation: attackAnimation
   }
 }
 
@@ -350,8 +355,8 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   , level: () => currentLevel()
   , attackSpeed: () => {
     const speed = Math.floor(1000 / (500 + combat.speed()) * 800)
-    if (speed <= 0.1) {
-      return 0.1
+    if (speed <= 100) {
+      return 100
     } else {
       return speed
     }
@@ -507,9 +512,11 @@ const makeCombatLoop = (enemy, player, dom) => {
       const damageMultiplier = TYPES[attacker.type()][defender.type()]
       defender.takeDamage(attacker.attack() * damageMultiplier)
       if (who === 'player') {
+        dom.attackAnimation('playerImg', 'right')
         playerTimer()
       }
       if (who === 'enemy') {
+        dom.attackAnimation('enemyImg', 'left')
         enemyTimer()
       }
       dom.renderPokeOnContainer('enemy', enemy.activePoke())
@@ -537,8 +544,9 @@ const makeCombatLoop = (enemy, player, dom) => {
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
         player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
         const afterExp = player.pokemons().map((poke) => poke.level())
+
         if (beforeExp.join('') !== afterExp.join('')) {
-          dom.renderPokeList('playerPokes', player.pokemons(), player)
+          dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
         }
 
         player.savePokes()
@@ -558,7 +566,7 @@ const makeCombatLoop = (enemy, player, dom) => {
           playerActivePoke = player.activePoke()
           refresh()
         }
-        dom.renderPokeList('playerPokes', player.pokemons(), player)
+        dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
       }
       dom.renderPokeOnContainer('enemy', enemy.activePoke())
     }
@@ -594,7 +602,7 @@ const makeCombatLoop = (enemy, player, dom) => {
 const renderView = (dom, enemy, player) => {
   dom.renderPokeOnContainer('enemy', enemy.activePoke())
   dom.renderPokeOnContainer('player', player.activePoke(), 'back')
-  dom.renderPokeList('playerPokes', player.pokemons(), player)
+  dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
 }
 
 // main

@@ -41,6 +41,20 @@ ul {
   text-align: center;
 }
 
+.poke .inner .img.attacked-right{
+  margin-left: 15px;
+}
+.poke .inner .img.attacked-left{
+  margin-right: 15px;
+}
+.poke .inner .img {
+  transition: margin 0.1s ease-out;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+
+
 .poke .inner .name {
   font-size: 18px;
   font-weight: 500;
