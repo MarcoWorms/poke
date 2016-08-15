@@ -192,7 +192,7 @@ const makeDomHandler = () => {
               color: red;
               text-decoration: none;
               position: relative;
-              left: -5px;
+              left: -3px;
             "
           >
             X
@@ -285,10 +285,10 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
         .length
     }
   const statValue = (raw) => {
-    return Math.floor((((raw + 50) * currentLevel()) / 50 + 5))
+    return Math.floor((((raw + 50) * currentLevel()) / (50 + 5)))
   }
   const hp = (rawHp) => {
-    return Math.floor(((rawHp * currentLevel()) / 50) + 10)
+    return Math.floor(((rawHp * currentLevel()) / 50) + 31)
   }
   const tryEvolve = () => {
     const pokemonHasEvolution =
@@ -303,9 +303,9 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   }
   const combat = {
     mutable: {
-      hp: hp(poke.stats[0].hp) * 4
+      hp: hp(poke.stats[0].hp) * 6
     }
-  , maxHp: () => hp(poke.stats[0].hp) * 4
+  , maxHp: () => hp(poke.stats[0].hp) * 6
   , attack: () => statValue(poke.stats[0].attack)
   , defense: () => statValue(poke.stats[0].defense)
   , spAttack: () => statValue(poke.stats[0]['sp atk'])
@@ -363,7 +363,16 @@ const makePlayer = () => {
   }
   const player_interface = {
     addPoke: (poke) => {
-      pokemons.push(poke)
+      const playerEqualPokes = pokemons.filter((playerPoke) => (playerPoke.pokeName() === poke.pokeName()))
+      if (playerEqualPokes.length === 0) {
+        pokemons.push(poke)
+      }
+      if (playerEqualPokes.length !== 0) {
+        if (poke.level() > playerEqualPokes[0].level()) {
+          pokemons.splice(pokemons.indexOf(playerEqualPokes[0]), 1)
+          pokemons.push(poke)
+        }
+      }
     }
   , setActive: (index) => {
       activePoke = index
@@ -494,7 +503,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         ) && renderView(dom, enemy, player)
         const beforeExp = player.pokemons().map((poke) => poke.level())
         playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
-        player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 50) + (enemyActivePoke.level() / 3)))
+        player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
         const afterExp = player.pokemons().map((poke) => poke.level())
         if (beforeExp.join('') !== afterExp.join('')) {
           dom.renderPokeList('playerPokes', player.pokemons(), player)

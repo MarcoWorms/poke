@@ -12,6 +12,7 @@ body {
   padding: 10px;
   border-radius: 3px;
   box-shadow: 0 0 10px black;
+  position: relative;
 }
 
 ul {
@@ -29,7 +30,7 @@ ul {
   max-height: 400px;
   background-color: rgb(217, 217, 217);
   border: solid 1px rgb(10, 0, 130);
-  box-shadow: 0 0 2px rgb(10, 0, 130);
+  box-shadow: 0 0 3px rgb(10, 0, 130);
   border-radius: 5px;
 }
 
@@ -69,7 +70,9 @@ ul {
   float: left;
   border-radius: 0 10px 10px 0;
   border-left: none;
-  margin-top: 20px;
+  position: absolute;
+  top: 270px;
+  left: 172px;
 }
 
 #playerPokes {
@@ -79,11 +82,19 @@ ul {
   height: 800px;
   text-align: center;
   overflow-y: scroll;
+  text-align: left;
+}
+
+#playerPokesList {
+  position: relative;
+  left: 8px
 }
 
 #heal {
+  display: block;
   width: 100px;
   height: 30px;
+  margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
 }
