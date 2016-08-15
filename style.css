@@ -48,7 +48,7 @@ ul {
   margin-right: 15px;
 }
 .poke .inner .img {
-  transition: margin 0.1s ease-out;
+  transition: margin 0.08s ease-out;
   margin-left: 0px;
   margin-right: 0px;
 }

@@ -264,7 +264,7 @@ const makeDomHandler = () => {
   const attackAnimation = (id, direction) => {
     const toAnimate = $('#' + id)
     toAnimate.classList = 'img attacked-' + direction
-    window.setTimeout(() => toAnimate.classList = 'img', 100)
+    window.setTimeout(() => toAnimate.classList = 'img', 80)
   }
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
