@@ -269,6 +269,12 @@ const makeDomHandler = () => {
     $('#enableDelete').addEventListener( 'click'
     , () => { userInteractions.enablePokeListDelete() }
     )
+
+    $(`#enableCatch`).addEventListener( 'click'
+    , () => { userInteractions.changeCatchOption($(`#enableCatch`).checked) }
+    )
+
+
   }
   bindEvents()
   return {
@@ -470,6 +476,9 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     enablePokeListDelete: () => {
       dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
+    },
+    changeCatchOption: (newCatchOption) => {
+      combatLoop.changeCatch(newCatchOption)
     }
   }
 }
@@ -479,6 +488,7 @@ const makeCombatLoop = (enemy, player, dom) => {
   var enemyActivePoke = enemy.activePoke()
   var playerTimerId = null
   var enemyTimerId = null
+  var catchEnabled = true
   const playerTimer = () => {
     playerTimerId = window.setTimeout(
       () => dealDamage(playerActivePoke, enemyActivePoke, 'player')
@@ -514,17 +524,23 @@ const makeCombatLoop = (enemy, player, dom) => {
       || (who === 'player') && !defender.alive())
       {
         //enemyActivePoke is dead
-        RNG(
-          player.addPoke.bind(null, enemy.activePoke())
-        , 1
-        ) && renderView(dom, enemy, player)
-        const beforeExp = player.pokemons().map((poke) => poke.level())
-        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
-        player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
-        const afterExp = player.pokemons().map((poke) => poke.level())
-        if (beforeExp.join('') !== afterExp.join('')) {
-          dom.renderPokeList('playerPokes', player.pokemons(), player)
+
+        if (catchEnabled) {
+          RNG(
+            player.addPoke.bind(null, enemy.activePoke())
+          , 1
+          ) && renderView(dom, enemy, player)
+          const beforeExp = player.pokemons().map((poke) => poke.level())
+          playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
+          player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
+          const afterExp = player.pokemons().map((poke) => poke.level())
+          if (beforeExp.join('') !== afterExp.join('')) {
+            dom.renderPokeList('playerPokes', player.pokemons(), player)
+          }
         }
+
+
+
         player.savePokes()
         enemy.generateNew(ROUTES[currentRouteId])
         enemyActivePoke = enemy.activePoke()
@@ -570,6 +586,7 @@ const makeCombatLoop = (enemy, player, dom) => {
       refresh()
     }
   , refresh: refresh
+  , changeCatch: (shouldCatch) => catchEnabled = shouldCatch
   }
 }
 
