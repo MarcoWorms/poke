@@ -224,16 +224,3 @@ const EVOLUTIONS = {
     "to":"Dragonite"
   }
 };
-
-function checkEvolution( poke )
-{
-    var evolve = evolutions[ pokemonInfo[ poke - 1 ].pokemon[ 0 ].Pokemon ];
-    if ( poke.level >= evolve.level )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}

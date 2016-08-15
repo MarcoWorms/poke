@@ -85,6 +85,10 @@ ul {
   text-align: left;
 }
 
+#playerPokes .checkDescription {
+  font-size: 14px;
+}
+
 #playerPokesList {
   position: relative;
   left: 8px

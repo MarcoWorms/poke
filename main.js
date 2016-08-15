@@ -177,11 +177,12 @@ const makeDomHandler = () => {
       setValue(healElement, 'Heal: ' + Math.floor(((canHeal/30000)*100)) + '%')
     }
   }
-  const renderPokeList = (id, list, player) => {
+  const renderPokeList = (id, list, player, deleteEnabledId) => {
     const listCssQuery = '.container.list' + '#' + id
     const listContainer = $(listCssQuery)
     const listElement = listContainer.querySelector('.list')
     setValue(listElement, '')
+    const deleteEnabled = deleteEnabledId && $(deleteEnabledId).checked
     list.forEach((poke, index) => {
       setValue(
         listElement
@@ -193,6 +194,7 @@ const makeDomHandler = () => {
               text-decoration: none;
               position: relative;
               left: -3px;
+              display: ${ deleteEnabled && 'inline' || 'none' };
             "
           >
             X
@@ -262,6 +264,10 @@ const makeDomHandler = () => {
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
     , () => { userInteractions.healAllPlayerPokemons() }
+    )
+
+    $('#enableDelete').addEventListener( 'click'
+    , () => { userInteractions.enablePokeListDelete() }
     )
   }
   bindEvents()
@@ -453,6 +459,9 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
       renderView(dom, enemy, player)
       player.savePokes()
       dom.renderRouteList('areasList', ROUTES)
+    },
+    enablePokeListDelete: () => {
+      dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
     }
   }
 }
@@ -514,6 +523,17 @@ const makeCombatLoop = (enemy, player, dom) => {
         enemyTimer()
         playerTimer()
       } else {
+        const playerLivePokesIndexes = player.pokemons().filter((poke, index) => {
+          if (poke.alive()) {
+            return true
+          }
+        })
+        if (playerLivePokesIndexes.length > 0) {
+          console.log(player.pokemons().indexOf(playerLivePokesIndexes[0]))
+          player.setActive(player.pokemons().indexOf(playerLivePokesIndexes[0]))
+          playerActivePoke = player.activePoke()
+          refresh()
+        }
         dom.renderPokeList('playerPokes', player.pokemons(), player)
       }
       dom.renderPokeOnContainer('enemy', enemy.activePoke())
