@@ -530,22 +530,23 @@ const makeCombatLoop = (enemy, player, dom) => {
             player.addPoke.bind(null, enemy.activePoke())
           , 1
           ) && renderView(dom, enemy, player)
-          const beforeExp = player.pokemons().map((poke) => poke.level())
-          playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
-          player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
-          const afterExp = player.pokemons().map((poke) => poke.level())
-          if (beforeExp.join('') !== afterExp.join('')) {
-            dom.renderPokeList('playerPokes', player.pokemons(), player)
-          }
+
         }
 
-
+        const beforeExp = player.pokemons().map((poke) => poke.level())
+        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
+        player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
+        const afterExp = player.pokemons().map((poke) => poke.level())
+        if (beforeExp.join('') !== afterExp.join('')) {
+          dom.renderPokeList('playerPokes', player.pokemons(), player)
+        }
 
         player.savePokes()
         enemy.generateNew(ROUTES[currentRouteId])
         enemyActivePoke = enemy.activePoke()
         enemyTimer()
         playerTimer()
+        dom.renderPokeOnContainer('player', player.activePoke())
       } else {
         const playerLivePokesIndexes = player.pokemons().filter((poke, index) => {
           if (poke.alive()) {
