@@ -21,84 +21,112 @@ const ROUTES = {
     starter: {
       name: 'Starter Area'
     , pokes: ['Caterpie', 'Weedle']
-    , maxLevel: 5
+    , minLevel: 3
+    , maxLevel: 4
     , unlocked: true
     }
   , starter2: {
       name: 'Starter Area 2'
     , pokes: ['Rattata', 'Pidgey', 'Spearow']
+    , minLevel: 5
     , maxLevel: 10
     , unlocked: true
     }
   , cavern1: {
       name: 'Cavern'
     , pokes: ['Zubat', 'Diglett', 'Machop', 'Abra']
+    , minLevel: 8
     , maxLevel: 16
     , unlocked: true
     }
   , rock_arena: {
       name: 'Rock Arena'
     , pokes: ['Geodude', 'Onix']
-    , maxLevel: 25
+    , minLevel: 20
+    , maxLevel: 30
     , unlocked: true
     }
   , fields: {
       name: 'Fields'
     , pokes: ['Sandshrew', 'Nidoran f', 'Nidoran m', 'Venonat', 'Vulpix']
-    , maxLevel: 30
+    , minLevel: 25
+    , maxLevel: 40
+    , unlocked: true
+    }
+  , toxic_area: {
+      name: 'Toxic Area'
+    , pokes: ['Grimer', 'Koffing']
+    , minLevel: 25
+    , maxLevel: 40
     , unlocked: true
     }
   , water_arena: {
       name: 'Water Arena'
-    , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea']
-    , maxLevel: 38
+    , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea', 'Seel']
+    , minLevel: 35
+    , maxLevel: 50
     , unlocked: true
     }
   , fields2: {
       name: 'Fields 2'
-    , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans']
-    , maxLevel: 42
+    , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans', 'Paras']
+    , minLevel: 40
+    , maxLevel: 55
     , unlocked: true
     }
   , thunder_arena: {
       name: 'Thunder Arena'
     , pokes: ['Pikachu', 'Magnemite', 'Voltorb']
-    , maxLevel: 48
+    , minLevel: 50
+    , maxLevel: 65
     , unlocked: true
     }
   , mtmoon: {
       name: 'Mt. Moon'
-    , pokes: ['Jigglypuff', 'Voltorb', 'Porygon']
-    , maxLevel: 55
+    , pokes: ['Jigglypuff', 'Voltorb', 'Porygon', 'Slowpoke']
+    , minLevel: 60
+    , maxLevel: 70
     , unlocked: true
     }
   , fields3: {
       name: 'Fields 3'
     , pokes: ['Growlithe', 'Drowzee', 'Cubone', 'Rhyhorn', 'Ponyta']
-    , maxLevel: 60
+    , minLevel: 65
+    , maxLevel: 75
     , unlocked: true
     }
   , scareland: {
       name: 'Scareland'
-    , pokes: ['Gastly']
-    , maxLevel: 70
+    , pokes: ['Gastly', 'Jynx', 'Mr. Mime']
+    , minLevel: 75
+    , maxLevel: 80
     , unlocked: true
     }
   , fields4: {
       name: 'Fields 4'
-    , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing']
-    , maxLevel: 75
+    , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Snorlax', 'Dratini']
+    , minLevel: 80
+    , maxLevel: 85
     , unlocked: true
     }
   , fields5: {
       name: 'Fields 5'
-    , pokes: ['Tangela', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz']
-    , maxLevel: 85
+    , pokes: ['Tangela', 'Scyther', 'Electabuzz', 'Pinsir', 'Omanyte', 'Kabuto', 'Aerodactyl']
+    , minLevel: 85
+    , maxLevel: 90
     , unlocked: true
     }
   , birds: {
       name: 'Birds'
     , pokes: ['Articuno', 'Zapdos', 'Moltres']
+    , minLevel: 90
+    , maxLevel: 99
+    , unlocked: true
+    }
+  , god: {
+      name: 'God'
+    , pokes: ['Mew']
+    , minLevel: 99
     , maxLevel: 99
     , unlocked: true
     }
@@ -254,7 +282,7 @@ const makeDomHandler = () => {
                           };
            "
            >
-             ${route.name + ' (' + route.maxLevel + ')'}
+             ${route.name + ' (' + route.minLevel + '~' + route.maxLevel + ')'}
            </a>
         <li>`
       , true
@@ -268,6 +296,18 @@ const makeDomHandler = () => {
     const toAnimate = $('#' + id)
     toAnimate.classList = 'img attacked-' + direction
     window.setTimeout(() => toAnimate.classList = 'img', 80)
+  }
+  const gameConsoleLog = (text, color) => {
+    if ($('#enableConsole').checked) {
+      if (color) {
+        $('#console .console-text').innerHTML = '<span style="color:' + color + ';">' + text + '</span>' + '<br>' + $('#console .console-text').innerHTML
+      } else {
+        $('#console .console-text').innerHTML = text + '<br>' + $('#console .console-text').innerHTML
+      }
+    }
+  }
+  const gameConsoleClear = () => {
+    $('#console .console-text').innerHTML = ''
   }
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
@@ -291,6 +331,8 @@ const makeDomHandler = () => {
   , renderHeal: renderHeal
   , attackAnimation: attackAnimation
   , checkConfirmed: checkConfirmed
+  , gameConsoleLog: gameConsoleLog
+  , gameConsoleClear: gameConsoleClear
   }
 }
 
@@ -366,9 +408,13 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
     }
   }
   , attack: () => combat.attack()
-  , takeDamage: (enemyAttack) => combat.mutable.hp -= (enemyAttack - combat.defense()/10) > 0
-                                                    && Math.ceil((enemyAttack - combat.defense()/10) * (Math.random() * 2) / 100)
-                                                    || 0
+  , takeDamage: (enemyAttack) => {
+      const damageToTake = (enemyAttack - combat.defense() / 10) > 0
+                              && Math.ceil((enemyAttack - combat.defense()/10) * (Math.random() * 2) / 100)
+                              || 0
+      combat.mutable.hp -= damageToTake
+      return damageToTake
+    }
   , baseExp: () => Number(poke.exp[0]['base exp'])
   , heal: () => combat.mutable.hp = combat.maxHp()
   , allCombat: () => combat
@@ -447,7 +493,7 @@ const makeEnemy = (starter) => {
 
   const generateNew = (recipe) => {
     const poke = pokeByName(randomArrayElement(recipe.pokes))
-    return makePoke(poke, Math.ceil((Math.random() * recipe.maxLevel)))
+    return makePoke(poke, recipe.minLevel + Math.round((Math.random() * (recipe.maxLevel - recipe.minLevel))))
   }
 
   return {
@@ -471,6 +517,7 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     healAllPlayerPokemons: () => {
       if (player.healAllPokemons() === "healed") {
+        gameConsoleLog('Full heal!', '#00ff00')
         combatLoop.refresh()
         renderView(dom, enemy, player)
       }
@@ -491,10 +538,12 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     clearGameData: () => {
       if (dom.checkConfirmed('#confirmClearData')) {
-        console.log('SIM')
         localStorage.clear()
         window.location.reload(true)
       }
+    },
+    clearConsole: () => {
+      dom.gameConsoleClear()
     }
   }
 }
@@ -521,15 +570,18 @@ const makeCombatLoop = (enemy, player, dom) => {
     if (attacker.alive() && defender.alive()) {
       // both alive
       const damageMultiplier = TYPES[attacker.type()][defender.type()]
-      defender.takeDamage(attacker.attack() * damageMultiplier)
+      const damage = defender.takeDamage(attacker.attack() * damageMultiplier)
       if (who === 'player') {
         dom.attackAnimation('playerImg', 'right')
+        dom.gameConsoleLog(attacker.pokeName() + ' Attacked for ' + damage, 'green')
         playerTimer()
       }
       if (who === 'enemy') {
         dom.attackAnimation('enemyImg', 'left')
+        dom.gameConsoleLog(attacker.pokeName() + ' Attacked for ' + damage, 'red')
         enemyTimer()
       }
+
       dom.renderPokeOnContainer('enemy', enemy.activePoke())
       dom.renderPokeOnContainer('player', player.activePoke(), 'back')
     }
@@ -552,7 +604,9 @@ const makeCombatLoop = (enemy, player, dom) => {
         }
 
         const beforeExp = player.pokemons().map((poke) => poke.level())
-        playerActivePoke.giveExp((enemyActivePoke.baseExp() / 9) + enemyActivePoke.level())
+        const expToGive = (enemyActivePoke.baseExp() / 9) + enemyActivePoke.level()
+        playerActivePoke.giveExp(expToGive)
+        dom.gameConsoleLog(playerActivePoke.pokeName() + ' won ' + Math.floor(expToGive) + 'xp', 'yellow')
         player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
         const afterExp = player.pokemons().map((poke) => poke.level())
 
@@ -567,6 +621,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         playerTimer()
         dom.renderPokeOnContainer('player', player.activePoke(), 'back')
       } else {
+        dom.gameConsoleLog(playerActivePoke.pokeName() + ' Fainted! ')
         const playerLivePokesIndexes = player.pokemons().filter((poke, index) => {
           if (poke.alive()) {
             return true
@@ -575,6 +630,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         if (playerLivePokesIndexes.length > 0) {
           player.setActive(player.pokemons().indexOf(playerLivePokesIndexes[0]))
           playerActivePoke = player.activePoke()
+          dom.gameConsoleLog('Go ' + playerActivePoke.pokeName() + '!')
           refresh()
         }
         dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
@@ -616,9 +672,9 @@ const renderView = (dom, enemy, player) => {
   dom.renderPokeList('playerPokes', player.pokemons(), player, '#enableDelete')
 }
 
+
 // main
 
-//var enemy = pokeAleatorio(3)
 const enemy = makeEnemy()
 enemy.generateNew(ROUTES[currentRouteId])
 
@@ -626,7 +682,7 @@ const player = makePlayer()
 if (localStorage.getItem(`totalPokes`) !== null) {
   player.loadPokes()
 } else {
-  player.addPoke(makePoke(pokeById(randomArrayElement([1, 4, 7])), 7))
+  player.addPoke(makePoke(pokeById(randomArrayElement([1, 4, 7])), 5))
 }
 
 const dom = makeDomHandler()

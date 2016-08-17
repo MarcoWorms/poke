@@ -5,10 +5,10 @@ body {
 #gameContainer {
   font-family: 'Lato', sans-serif;
   color: #111111;
-  width: 600px;
+  width: 800px;
   margin: auto;
   background-color: rgb(82, 153, 228);
-  height: 1000px;
+  height: 602px;
   padding: 10px;
   border-radius: 3px;
   box-shadow: 0 0 10px black;
@@ -39,6 +39,13 @@ ul {
   line-height: 25px;
   font-size: 12px;
   text-align: center;
+  width: 165px;
+  float: left;
+}
+
+#player .inner {
+  border-right: solid 1px rgb(7, 0, 90);
+  border-bottom: solid 1px rgb(7, 0, 90);
 }
 
 .poke .inner .img.attacked-right{
@@ -71,8 +78,13 @@ ul {
   min-height: none;
   max-height: none;
   height: 400px;
-  text-align: center;
   border-radius: 0 5px 5px 5px;
+  width: 190px;
+  text-align: right;
+}
+
+#areasList li,#areasList a {
+  margin-right: 6px;
 }
 
 #enemy .status, #enemy .expBar {
@@ -87,13 +99,15 @@ ul {
   position: absolute;
   top: 270px;
   left: 172px;
+  width: 438px;
+  height: 340px;
 }
 
 #playerPokes {
   float: left;
   min-height: none;
   max-height: none;
-  height: 800px;
+  height: 600px;
   text-align: center;
   overflow-y: scroll;
   text-align: left;
@@ -116,6 +130,34 @@ ul {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+#console {
+  float: left;
+  width: 272px;
+  height: 340px;
+  box-sizing: border-box;
+  padding: 10px;
+  overflow: scroll;
+}
+
+#console .console-text {
+
+}
+
+
+#playerBox {
+  position: absolute;
+  top: 231px;
+  width: 166px;
+  height: 109px;
+}
+
+#playerBox button {
+  margin-left: 10px;
+  width: 150px;
+}
+
+
 
 
 

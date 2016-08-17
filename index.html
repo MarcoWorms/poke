@@ -16,8 +16,6 @@
       <br>
       <ul class="list">
       </ul>
-      <input type="checkbox" id="confirmClearData" style="position: relative;top: 78px;">
-      <a href="#" style="position: relative;top: 77px;color: red;" onclick="userInteractions.clearGameData()">Clear game data</a>
     </div>
 
 
@@ -56,6 +54,15 @@
         <progress class="expBar" value="0" max="100"></progress>
         <br>
         <span class="status"></span>
+      </div>
+      <div id="console">
+        <span class="console-text"></span>
+      </div>
+      <div id="playerBox">
+        <input type="checkbox" checked="true" id="enableConsole"><span>Enable console</span><br><br>
+        <button onclick="userInteractions.clearConsole()">Clear Console</button><br><br>
+        <input type="checkbox" id="confirmClearData">
+        <a href="#" style="color: red;" onclick="userInteractions.clearGameData()">Clear game data</a>
       </div>
     </div>
 

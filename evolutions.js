@@ -184,11 +184,11 @@ const EVOLUTIONS = {
     "to":"Muk"
   },
   "Gastly":{
-    "level":"60",
+    "level":"80",
     "to":"Haunter"
   },
   "Haunter":{
-    "level":"85",
+    "level":"95",
     "to":"Gengar"
   },
   "Drowzee":{
