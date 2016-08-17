@@ -261,6 +261,9 @@ const makeDomHandler = () => {
       )
     })
   }
+  const checkConfirmed = (id) => {
+    return $(id).checked
+  }
   const attackAnimation = (id, direction) => {
     const toAnimate = $('#' + id)
     toAnimate.classList = 'img attacked-' + direction
@@ -287,6 +290,7 @@ const makeDomHandler = () => {
   , renderRouteList: renderRouteList
   , renderHeal: renderHeal
   , attackAnimation: attackAnimation
+  , checkConfirmed: checkConfirmed
   }
 }
 
@@ -486,11 +490,10 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
       combatLoop.changeCatch(newCatchOption)
     },
     clearGameData: () => {
-      const answer = confirm("Delete all data?")
-      console.log(answer)
-      if (answer){
-        localStorage.clear();
-        window.location.reload(false)
+      if (dom.checkConfirmed('#confirmClearData')) {
+        console.log('SIM')
+        localStorage.clear()
+        window.location.reload(true)
       }
     }
   }
