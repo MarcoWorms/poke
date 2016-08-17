@@ -1,226 +1,246 @@
 const EVOLUTIONS = {
   "Bulbasaur":{
-    "level":"16",
+    "level":"35",
     "to":"Ivysaur"
   },
   "Ivysaur":{
-    "level":"32",
+    "level":"70",
     "to":"Venusaur"
   },
   "Charmander":{
-    "level":"16",
+    "level":"35",
     "to":"Charmeleon"
   },
   "Charmeleon":{
-    "level":"36",
+    "level":"70",
     "to":"Charizard"
   },
   "Squirtle":{
-    "level":"16",
+    "level":"35",
     "to":"Wartortle"
   },
   "Wartortle":{
-    "level":"36",
+    "level":"70",
     "to":"Blastoise"
   },
   "Caterpie":{
-    "level":"7",
+    "level":"10",
     "to":"Metapod"
   },
   "Metapod":{
-    "level":"10",
+    "level":"50",
     "to":"Butterfree"
   },
   "Weedle":{
-    "level":"7",
+    "level":"10",
     "to":"Kakuna"
   },
   "Kakuna":{
-    "level":"10",
+    "level":"50",
     "to":"Beedrill"
   },
   "Pidgey":{
-    "level":"18",
+    "level":"50",
     "to":"Pidgeotto"
   },
   "Pidgeotto":{
-    "level":"36",
+    "level":"80",
     "to":"Pidgeot"
   },
   "Rattata":{
-    "level":"20",
+    "level":"40",
     "to":"Raticate"
   },
   "Spearow":{
-    "level":"20",
+    "level":"40",
     "to":"Fearow"
   },
   "Ekans":{
-    "level":"22",
+    "level":"40",
     "to":"Arbok"
   },
   "Sandshrew":{
-    "level":"22",
+    "level":"70",
     "to":"Sandslash"
   },
-  "Nidoran♀":{
-    "level":"16",
+  "Nidoran f":{
+    "level":"40",
     "to":"Nidorina"
   },
-  "Nidoran♂":{
-    "level":"16",
+  "Nidorina":{
+    "level":"80",
+    "to":"Nidoqueen"
+  },
+  "Nidoran m":{
+    "level":"40",
     "to":"Nidorino"
   },
+  "Nidorino":{
+    "level":"80",
+    "to":"Nidoking"
+  },
   "Zubat":{
-    "level":"22",
+    "level":"50",
     "to":"Golbat"
   },
   "Oddish":{
-    "level":"21",
+    "level":"40",
     "to":"Gloom"
   },
+  "Gloom":{
+    "level":"70",
+    "to":"Vileplume"
+  },
   "Paras":{
-    "level":"24",
+    "level":"60",
     "to":"Parasect"
   },
   "Venonat":{
-    "level":"31",
+    "level":"50",
     "to":"Venomoth"
   },
   "Diglett":{
-    "level":"26",
+    "level":"60",
     "to":"Dugtrio"
   },
   "Meowth":{
-    "level":"28",
+    "level":"70",
     "to":"Persian"
   },
   "Psyduck":{
-    "level":"33",
+    "level":"80",
     "to":"Golduck"
   },
   "Mankey":{
-    "level":"28",
+    "level":"60",
     "to":"Primeape"
   },
   "Poliwag":{
-    "level":"25",
+    "level":"50",
     "to":"Poliwhirl"
   },
+  "Poliwhirl":{
+    "level":"80",
+    "to":"Poliwrath"
+  },
   "Abra":{
-    "level":"16",
+    "level":"50",
     "to":"Kadabra"
   },
+  "Kadabra":{
+    "level":"85",
+    "to":"Alakazam"
+  },
   "Machop":{
-    "level":"28",
+    "level":"50",
     "to":"Machoke"
   },
+  "Machoke":{
+    "level":"80",
+    "to":"Machamp"
+  },
   "Bellsprout":{
-    "level":"21",
+    "level":"50",
     "to":"Weepinbell"
   },
+  "Weepinbell":{
+    "level":"80",
+    "to":"Victreebel"
+  },
   "Tentacool":{
-    "level":"30",
+    "level":"60",
     "to":"Tentacruel"
   },
   "Geodude":{
-    "level":"25",
+    "level":"50",
     "to":"Graveler"
   },
+  "Graveler":{
+    "level":"75",
+    "to":"Golem"
+  },
   "Ponyta":{
-    "level":"40",
+    "level":"50",
     "to":"Rapidash"
   },
   "Slowpoke":{
-    "level":"37",
+    "level":"70",
     "to":"Slowbro"
   },
   "Magnemite":{
-    "level":"30",
+    "level":"70",
     "to":"Magneton"
   },
   "Doduo":{
-    "level":"31",
+    "level":"60",
     "to":"Dodrio"
   },
   "Seel":{
-    "level":"34",
+    "level":"60",
     "to":"Dewgong"
   },
   "Grimer":{
-    "level":"38",
+    "level":"60",
     "to":"Muk"
   },
   "Gastly":{
-    "level":"25",
+    "level":"60",
     "to":"Haunter"
   },
+  "Haunter":{
+    "level":"85",
+    "to":"Gengar"
+  },
   "Drowzee":{
-    "level":"26",
+    "level":"60",
     "to":"Hypno"
   },
   "Krabby":{
-    "level":"28",
+    "level":"60",
     "to":"Kingler"
   },
   "Voltorb":{
-    "level":"30",
+    "level":"70",
     "to":"Electrode"
   },
   "Cubone":{
-    "level":"28",
+    "level":"80",
     "to":"Marowak"
   },
-  "Tyrogue":{
-    "level":"20",
-    "to":"Hitmontop"
-  },
   "Koffing":{
-    "level":"35",
+    "level":"60",
     "to":"Weezing"
   },
   "Rhyhorn":{
-    "level":"42",
+    "level":"85",
     "to":"Rhydon"
   },
   "Horsea":{
-    "level":"32",
+    "level":"60",
     "to":"Seadra"
   },
   "Goldeen":{
-    "level":"33",
+    "level":"60",
     "to":"Seaking"
   },
-  "Smoochum":{
-    "level":"30",
-    "to":"Jynx"
-  },
-  "Elekid":{
-    "level":"30",
-    "to":"Electabuzz"
-  },
-  "Magby":{
-    "level":"30",
-    "to":"Magmar"
-  },
   "Magikarp":{
-    "level":"20",
+    "level":"95",
     "to":"Gyarados"
   },
   "Omanyte":{
-    "level":"40",
+    "level":"85",
     "to":"Omastar"
   },
   "Kabuto":{
-    "level":"40",
+    "level":"85",
     "to":"Kabutops"
   },
   "Dratini":{
-    "level":"30",
+    "level":"70",
     "to":"Dragonair"
   },
   "Dragonair":{
-    "level":"55",
+    "level":"90",
     "to":"Dragonite"
   }
 };

@@ -21,79 +21,79 @@ const ROUTES = {
     starter: {
       name: 'Starter Area'
     , pokes: ['Caterpie', 'Weedle']
-    , maxLevel: 2
+    , maxLevel: 5
     , unlocked: true
     }
   , starter2: {
       name: 'Starter Area 2'
     , pokes: ['Rattata', 'Pidgey', 'Spearow']
-    , maxLevel: 5
+    , maxLevel: 10
     , unlocked: true
     }
   , cavern1: {
       name: 'Cavern'
     , pokes: ['Zubat', 'Diglett', 'Machop', 'Abra']
-    , maxLevel: 12
+    , maxLevel: 16
     , unlocked: true
     }
   , rock_arena: {
       name: 'Rock Arena'
     , pokes: ['Geodude', 'Onix']
-    , maxLevel: 20
+    , maxLevel: 25
     , unlocked: true
     }
   , fields: {
       name: 'Fields'
     , pokes: ['Sandshrew', 'Nidoran f', 'Nidoran m', 'Venonat', 'Vulpix']
-    , maxLevel: 26
+    , maxLevel: 30
     , unlocked: true
     }
   , water_arena: {
       name: 'Water Arena'
     , pokes: ['Goldeen', 'Staryu', 'Shellder', 'Horsea']
-    , maxLevel: 34
+    , maxLevel: 38
     , unlocked: true
     }
   , fields2: {
       name: 'Fields 2'
     , pokes: ['Mankey', 'Psyduck', 'Meowth', 'Ekans']
-    , maxLevel: 39
+    , maxLevel: 42
     , unlocked: true
     }
   , thunder_arena: {
       name: 'Thunder Arena'
     , pokes: ['Pikachu', 'Magnemite', 'Voltorb']
-    , maxLevel: 43
+    , maxLevel: 48
     , unlocked: true
     }
   , mtmoon: {
       name: 'Mt. Moon'
     , pokes: ['Jigglypuff', 'Voltorb', 'Porygon']
-    , maxLevel: 52
+    , maxLevel: 55
     , unlocked: true
     }
   , fields3: {
       name: 'Fields 3'
     , pokes: ['Growlithe', 'Drowzee', 'Cubone', 'Rhyhorn', 'Ponyta']
-    , maxLevel: 55
+    , maxLevel: 60
     , unlocked: true
     }
   , scareland: {
       name: 'Scareland'
-    , pokes: ['Gastly', 'Haunter', 'Gengar']
-    , maxLevel: 60
+    , pokes: ['Gastly']
+    , maxLevel: 70
     , unlocked: true
     }
   , fields4: {
       name: 'Fields 4'
     , pokes: ['Hitmonlee', 'Hitmonchan', 'Lickitung', 'Koffing']
-    , maxLevel: 68
+    , maxLevel: 75
     , unlocked: true
     }
   , fields5: {
       name: 'Fields 5'
     , pokes: ['Tangela', 'Mr. Mime', 'Scyther', 'Jynx', 'Electabuzz']
-    , maxLevel: 75
+    , maxLevel: 85
     , unlocked: true
     }
   , birds: {
@@ -321,9 +321,9 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   }
   const combat = {
     mutable: {
-      hp: hp(poke.stats[0].hp) * 6
+      hp: hp(poke.stats[0].hp) * 3
     }
-  , maxHp: () => hp(poke.stats[0].hp) * 6
+  , maxHp: () => hp(poke.stats[0].hp) * 3
   , attack: () => statValue(poke.stats[0].attack)
   , defense: () => statValue(poke.stats[0].defense)
   , spAttack: () => statValue(poke.stats[0]['sp atk'])
@@ -355,8 +355,8 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   , level: () => currentLevel()
   , attackSpeed: () => {
     const speed = Math.floor(1000 / (500 + combat.speed()) * 800)
-    if (speed <= 100) {
-      return 100
+    if (speed <= 75) {
+      return 75
     } else {
       return speed
     }
@@ -484,6 +484,14 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     changeCatchOption: (newCatchOption) => {
       combatLoop.changeCatch(newCatchOption)
+    },
+    clearGameData: () => {
+      const answer = confirm("Delete all data?")
+      console.log(answer)
+      if (answer){
+        localStorage.clear();
+        window.location.reload(false)
+      }
     }
   }
 }
@@ -615,7 +623,7 @@ const player = makePlayer()
 if (localStorage.getItem(`totalPokes`) !== null) {
   player.loadPokes()
 } else {
-  player.addPoke(makePoke(pokeById(randomArrayElement([1, 4, 7])), 5))
+  player.addPoke(makePoke(pokeById(randomArrayElement([1, 4, 7])), 7))
 }
 
 const dom = makeDomHandler()
