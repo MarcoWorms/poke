@@ -86501,9 +86501,9 @@ const POKEDEX = [
          {
             "catch rate": "",
             "growth rate": "Slow",
-            "hp": "90",
-            "attack": "85",
-            "defense": "100",
+            "hp": "130",
+            "attack": "100",
+            "defense": "150",
             "sp atk": "95",
             "sp def": "125",
             "speed": "85",
@@ -87216,9 +87216,9 @@ const POKEDEX = [
          {
             "catch rate": "",
             "growth rate": "Slow",
-            "hp": "90",
-            "attack": "90",
-            "defense": "85",
+            "hp": "150",
+            "attack": "130",
+            "defense": "100",
             "sp atk": "125",
             "sp def": "90",
             "speed": "100",
@@ -87944,10 +87944,10 @@ const POKEDEX = [
          {
             "catch rate": "",
             "growth rate": "Slow",
-            "hp": "90",
-            "attack": "100",
-            "defense": "90",
-            "sp atk": "125",
+            "hp": "130",
+            "attack": "150",
+            "defense": "100",
+            "sp atk": "150",
             "sp def": "85",
             "speed": "90",
             "types": {
@@ -92082,12 +92082,12 @@ const POKEDEX = [
          {
             "catch rate": "45",
             "growth rate": "Medium Slow",
-            "hp": "3000",
-            "attack": "1000",
-            "defense": "300",
+            "hp": "1500",
+            "attack": "300",
+            "defense": "225",
             "sp atk": "5000",
             "sp def": "5000",
-            "speed": "5000",
+            "speed": "300",
             "types": {
                "text": "Psychic",
                "href": "http://pokemondb.net/type/psychic"
