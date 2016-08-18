@@ -566,7 +566,7 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     healAllPlayerPokemons: () => {
       if (player.healAllPokemons() === "healed") {
-        dom.gameConsoleLog('Full heal!', '#00ff00')
+        dom.gameConsoleLog('Full heal!', 'white')
         combatLoop.refresh()
         renderView(dom, enemy, player)
       }
@@ -682,7 +682,7 @@ const makeCombatLoop = (enemy, player, dom) => {
         }
 
         const beforeExp = player.pokemons().map((poke) => poke.level())
-        const expToGive = (enemyActivePoke.baseExp() / 9) + enemyActivePoke.level()
+        const expToGive = (enemyActivePoke.baseExp() / 16) + (enemyActivePoke.level() * 3)
         playerActivePoke.giveExp(expToGive)
         dom.gameConsoleLog(playerActivePoke.pokeName() + ' won ' + Math.floor(expToGive) + 'xp', 'rgb(153, 166, 11)')
         player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
