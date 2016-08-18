@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,3 +89,102 @@
 
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Poke</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+
+  <div id="gameContainer">
+
+    <div id="areasList" class="container list">
+      <br>
+      <ul class="list">
+      </ul>
+    </div>
+
+
+
+    <div id="playerPokes" class="container list">
+      <input type="checkbox" id="enableDelete" ><span class="checkDescription">Enable Delete</span>
+      <button type="button" name="button" id="heal">Heal</button>
+      <ul id="playerPokesList" class="list">
+      </ul>
+    </div>
+
+
+
+    <div id="enemy" class="container poke">
+      <div class="inner">
+        <span class="name"></span><br>
+        <img id="enemyImg" class="img" src="" alt=""><br>
+        <span class="hp"></span><br>
+        <span>hp: </span>
+        <progress class="hpBar" value="0" max="100"></progress><br>
+        <progress class="expBar" value="0" max="100"></progress>
+        <br>
+        <span class="status"></span>
+      </div>
+      <div id="capture-options">
+        <input type="checkbox" id="enableCatch"><span>Try to catch</span>
+        <p>Using:</p>
+        <input type="radio" name="name" value="pokeball" checked="true" onclick="userInteractions.changeSelectedBall('pokeball')"><span> Pokeballs: </span><span class="ball-ammount pokeball">10</span><br>
+        <input type="radio" name="name" value="greatball" onclick="userInteractions.changeSelectedBall('greatball')"><span>Greatballs: </span><span class="ball-ammount greatball">0</span><br>
+        <input type="radio" name="name" value="ultraball" onclick="userInteractions.changeSelectedBall('ultraball')"><span>Ultraballs: </span><span class="ball-ammount ultraball">0</span><br>
+      </div>
+    </div>
+
+    <div id="player" class="container poke">
+      <div class="inner">
+        <span class="name"></span><br>
+        <img id="playerImg" class="img" src="" alt=""><br>
+        <span class="hp"></span><br>
+        <span>hp: </span>
+        <progress class="hpBar" value="0" max="100"></progress><br>
+        <span>xp: </span>
+        <progress class="expBar" value="0" max="100"></progress>
+        <br>
+        <span class="status"></span>
+      </div>
+      <div id="console">
+        <span class="console-text"></span>
+      </div>
+      <div id="playerBox">
+        <input type="checkbox" checked="true" id="enableConsole"><span>Enable console</span><br><br>
+        <button onclick="userInteractions.clearConsole()">Clear Console</button><br><br>
+        <input type="checkbox" id="confirmClearData">
+        <a href="#" style="color: red;" onclick="userInteractions.clearGameData()">Clear game data</a>
+      </div>
+    </div>
+
+    <span id="version">Version: 0.0.1</span>
+    <a id="gitLink" href="https://github.com/MarcoWorms/poke" target="_blank">GitHub</a>
+  </div>
+
+  <!-- <script src="//cdn.jsdelivr.net/ramda/latest/ramda.min.js"></script> -->
+  <script src="db.js"></script>
+  <script src="evolutions.js"></script>
+  <script src="typeModifiers.js"></script>
+  <script src="main.js"></script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-77979253-2', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
+>>>>>>> origin/master
