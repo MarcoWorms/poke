@@ -38,8 +38,14 @@
         <progress class="hpBar" value="0" max="100"></progress><br>
         <progress class="expBar" value="0" max="100"></progress>
         <br>
-        <input type="checkbox" id="enableCatch" checked="true"><span>Try to catch</span>
         <span class="status"></span>
+      </div>
+      <div id="capture-options">
+        <input type="checkbox" id="enableCatch"><span>Try to catch</span>
+        <p>Using:</p>
+        <input type="radio" name="name" value="pokeball" checked="true" onclick="userInteractions.changeSelectedBall('pokeball')"><span> Pokeballs: </span><span class="ball-ammount pokeball">10</span><br>
+        <input type="radio" name="name" value="greatball" onclick="userInteractions.changeSelectedBall('greatball')"><span>Greatballs: </span><span class="ball-ammount greatball">0</span><br>
+        <input type="radio" name="name" value="ultraball" onclick="userInteractions.changeSelectedBall('ultraball')"><span>Ultraballs: </span><span class="ball-ammount ultraball">0</span><br>
       </div>
     </div>
 
@@ -66,6 +72,7 @@
       </div>
     </div>
 
+    <span id="version">Version: 0.0.1</span>
     <a id="gitLink" href="https://github.com/MarcoWorms/poke" target="_blank">GitHub</a>
   </div>
 

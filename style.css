@@ -71,6 +71,18 @@ ul {
   float: right;
   border-radius: 10px 0 0 10px;
   border-right: none;
+  width: 311px;
+}
+
+#enemy .inner {
+  float: right;
+}
+
+#capture-options {
+  float: left;
+  width: 146px;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 #areasList {
@@ -161,6 +173,12 @@ ul {
   position: absolute;
   top: 597px;
   left: 761px;
+}
+
+#version {
+  position: absolute;
+  top: 598px;
+  left: 621px;
 }
 
 

@@ -21,7 +21,7 @@ const ROUTES = {
     starter: {
       name: 'Starter Area'
     , pokes: ['Caterpie', 'Weedle']
-    , minLevel: 3
+    , minLevel: 2
     , maxLevel: 4
     , unlocked: true
     }
@@ -298,16 +298,27 @@ const makeDomHandler = () => {
     window.setTimeout(() => toAnimate.classList = 'img', 80)
   }
   const gameConsoleLog = (text, color) => {
+    const logElement = $('#console .console-text')
     if ($('#enableConsole').checked) {
       if (color) {
-        $('#console .console-text').innerHTML = '<span style="color:' + color + ';">' + text + '</span>' + '<br>' + $('#console .console-text').innerHTML
+        logElement.innerHTML = '<span style="color:' + color + ';">' + text + '</span>' + '<br>' + logElement.innerHTML
       } else {
-        $('#console .console-text').innerHTML = text + '<br>' + $('#console .console-text').innerHTML
+        logElement.innerHTML = text + '<br>' + logElement.innerHTML
       }
+    }
+    const logAsArray = logElement.innerHTML.split('<br>')
+    if (logAsArray.length >= 100) {
+      logAsArray.splice(logAsArray.length - 1, 1)
+      logElement.innerHTML = logAsArray.join('<br>')
     }
   }
   const gameConsoleClear = () => {
     $('#console .console-text').innerHTML = ''
+  }
+  const renderBalls = (ballsAmmount) => {
+    Object.keys(ballsAmmount).forEach(ballType => {
+      $('.ball-ammount.' + ballType).innerHTML = ballsAmmount[ballType]
+    })
   }
   const bindEvents = () => {
     $('#heal').addEventListener( 'click'
@@ -333,6 +344,7 @@ const makeDomHandler = () => {
   , checkConfirmed: checkConfirmed
   , gameConsoleLog: gameConsoleLog
   , gameConsoleClear: gameConsoleClear
+  , renderBalls: renderBalls
   }
 }
 
@@ -349,10 +361,10 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
 
     }
   const statValue = (raw) => {
-    return Math.floor((((raw + 50) * currentLevel()) / (50 + 5)))
+    return Math.floor((((raw + 50) * currentLevel()) / (150)))
   }
   const hp = (rawHp) => {
-    return Math.floor(((rawHp * currentLevel()) / 50) + 31)
+    return Math.floor(((rawHp * currentLevel()) / 40))
   }
   const tryEvolve = () => {
     const pokemonHasEvolution =
@@ -401,8 +413,8 @@ const makePoke = (pokeModel, initialLevel, initialExp) => {
   , level: () => currentLevel()
   , attackSpeed: () => {
     const speed = Math.floor(1000 / (500 + combat.speed()) * 800)
-    if (speed <= 75) {
-      return 75
+    if (speed <= 300) {
+      return 300
     } else {
       return speed
     }
@@ -428,6 +440,19 @@ const makePlayer = () => {
   var pokemons = []
   var activePoke = 0
   var lastHeal = Date.now()
+
+  const ballsRngs = {
+    pokeball: 1,
+    greatball: 4,
+    ultraball: 10
+  }
+  var selectedBall = "pokeball"
+  var ballsAmmount = {
+    pokeball: 20,
+    greatball: 0,
+    ultraball: 0
+  }
+
   const canHeal = () => {
     if ((Date.now() - lastHeal) > 30000) {
       return true
@@ -438,16 +463,17 @@ const makePlayer = () => {
   }
   const player_interface = {
     addPoke: (poke) => {
-      const playerEqualPokes = pokemons.filter((playerPoke) => (playerPoke.pokeName() === poke.pokeName()))
-      if (playerEqualPokes.length === 0) {
-        pokemons.push(poke)
-      }
-      if (playerEqualPokes.length !== 0) {
-        if (poke.level() > playerEqualPokes[0].level()) {
-          pokemons.splice(pokemons.indexOf(playerEqualPokes[0]), 1)
-          pokemons.push(poke)
-        }
-      }
+      // const playerEqualPokes = pokemons.filter((playerPoke) => (playerPoke.pokeName() === poke.pokeName()))
+      // if (playerEqualPokes.length === 0) {
+      //   pokemons.push(poke)
+      // }
+      // if (playerEqualPokes.length !== 0) {
+      //   if (poke.level() > playerEqualPokes[0].level()) {
+      //     pokemons.splice(pokemons.indexOf(playerEqualPokes[0]), 1)
+      //     pokemons.push(poke)
+      //   }
+      // }
+      pokemons.push(poke)
     }
   , setActive: (index) => {
       activePoke = index
@@ -476,6 +502,7 @@ const makePlayer = () => {
       pokemons.forEach((poke, index) => {
         localStorage.setItem(`poke${index}`, JSON.stringify(poke.save()))
       })
+      localStorage.setItem(`ballsAmmount`, JSON.stringify(ballsAmmount))
     }
   , loadPokes: () => {
       Array(Number(localStorage.getItem(`totalPokes`))).fill(0).forEach((el, index) => {
@@ -483,6 +510,28 @@ const makePlayer = () => {
         const exp = JSON.parse(localStorage.getItem('poke'+index))[1]
         pokemons.push(makePoke(pokeByName(pokeName), false, Number(exp)))
       })
+      if (JSON.parse(localStorage.getItem('ballsAmmount'))) {
+        ballsAmmount = JSON.parse(localStorage.getItem('ballsAmmount'))
+      }
+
+    }
+  , selectedBallRNG: () => {
+      return ballsRngs[selectedBall]
+    }
+  , changeSelectedBall: (newBall) => {
+      selectedBall = newBall
+    }
+  , consumeBall: (ballName) => {
+     if (ballsAmmount[ballName] > 0) {
+       ballsAmmount[ballName] -= 1
+       return true
+     }
+     return false
+    }
+  , selectedBall: () => selectedBall
+  , ballsAmmount: () => ballsAmmount
+  , addBalls: (ballName, ammount) => {
+      ballsAmmount[ballName] += ammount
     }
   }
   return player_interface
@@ -544,6 +593,9 @@ const makeUserInteractions = (player, enemy, dom, combatLoop) => {
     },
     clearConsole: () => {
       dom.gameConsoleClear()
+    },
+    changeSelectedBall: (newBall) => {
+      player.changeSelectedBall(newBall)
     }
   }
 }
@@ -553,7 +605,7 @@ const makeCombatLoop = (enemy, player, dom) => {
   var enemyActivePoke = enemy.activePoke()
   var playerTimerId = null
   var enemyTimerId = null
-  var catchEnabled = true
+  var catchEnabled = false
   const playerTimer = () => {
     playerTimerId = window.setTimeout(
       () => dealDamage(playerActivePoke, enemyActivePoke, 'player')
@@ -578,7 +630,7 @@ const makeCombatLoop = (enemy, player, dom) => {
       }
       if (who === 'enemy') {
         dom.attackAnimation('enemyImg', 'left')
-        dom.gameConsoleLog(attacker.pokeName() + ' Attacked for ' + damage, 'red')
+        dom.gameConsoleLog(attacker.pokeName() + ' Attacked for ' + damage, 'rgb(207, 103, 59)')
         enemyTimer()
       }
 
@@ -596,17 +648,43 @@ const makeCombatLoop = (enemy, player, dom) => {
         //enemyActivePoke is dead
 
         if (catchEnabled) {
-          RNG(
-            player.addPoke.bind(null, enemy.activePoke())
-          , 1
-          ) && renderView(dom, enemy, player)
+          dom.gameConsoleLog('Trying to catch ' + enemy.activePoke().pokeName() + '...', 'purple')
+          if (player.consumeBall(player.selectedBall())) {
+            dom.renderBalls(player.ballsAmmount())
+            const rngHappened =
+              RNG(
+                player.addPoke.bind(null, enemy.activePoke())
+              , player.selectedBallRNG()
+              )
+            if (rngHappened) {
+              dom.gameConsoleLog('You caught ' + enemy.activePoke().pokeName() + '!!', 'purple')
+              renderView(dom, enemy, player)
+            } else {
+              dom.gameConsoleLog(enemy.activePoke().pokeName() + ' escaped!!', 'purple')
+            }
+          }
+        }
 
+        const ballsAmmount = Math.floor(Math.random() * 10) + 1
+        const ballName = randomArrayElement(['pokeball', 'pokeball', 'pokeball', 'pokeball', 'pokeball', 'pokeball', 'greatball', 'greatball', 'ultraball'])
+        const rngHappened2 =
+          RNG(
+            player.addBalls.bind(
+              null,
+              ballName,
+              ballsAmmount
+            )
+          , 10
+          )
+        if (rngHappened2) {
+          dom.gameConsoleLog('You found ' + ballsAmmount + ' ' + ballName + 's!!', 'purple')
+          dom.renderBalls(player.ballsAmmount)
         }
 
         const beforeExp = player.pokemons().map((poke) => poke.level())
         const expToGive = (enemyActivePoke.baseExp() / 9) + enemyActivePoke.level()
         playerActivePoke.giveExp(expToGive)
-        dom.gameConsoleLog(playerActivePoke.pokeName() + ' won ' + Math.floor(expToGive) + 'xp', 'yellow')
+        dom.gameConsoleLog(playerActivePoke.pokeName() + ' won ' + Math.floor(expToGive) + 'xp', 'rgb(153, 166, 11)')
         player.pokemons().forEach((poke) => poke.giveExp((enemyActivePoke.baseExp() / 100) + (enemyActivePoke.level() / 10)))
         const afterExp = player.pokemons().map((poke) => poke.level())
 
@@ -687,6 +765,7 @@ if (localStorage.getItem(`totalPokes`) !== null) {
 
 const dom = makeDomHandler()
 dom.renderRouteList('areasList', ROUTES)
+dom.renderBalls(player.ballsAmmount())
 const combatLoop = makeCombatLoop(enemy, player, dom)
 const userInteractions = makeUserInteractions(player, enemy, dom, combatLoop)
 
