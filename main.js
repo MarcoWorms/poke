@@ -678,7 +678,7 @@ const makeCombatLoop = (enemy, player, dom) => {
           )
         if (rngHappened2) {
           dom.gameConsoleLog('You found ' + ballsAmmount + ' ' + ballName + 's!!', 'purple')
-          dom.renderBalls(player.ballsAmmount)
+          dom.renderBalls(player.ballsAmmount())
         }
 
         const beforeExp = player.pokemons().map((poke) => poke.level())
