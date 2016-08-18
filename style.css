@@ -71,7 +71,7 @@ ul {
   float: right;
   border-radius: 10px 0 0 10px;
   border-right: none;
-  width: 311px;
+  width: 370px;
 }
 
 #enemy .inner {
@@ -80,7 +80,7 @@ ul {
 
 #capture-options {
   float: left;
-  width: 146px;
+  width: 190px;
   box-sizing: border-box;
   padding: 10px;
 }
