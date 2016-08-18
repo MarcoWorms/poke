@@ -144,12 +144,13 @@ ul {
 }
 
 #console {
-  float: left;
-  width: 259px;
-  height: 340px;
-  box-sizing: border-box;
-  padding: 10px;
-  overflow: scroll;
+    float: left;
+    width: 259px;
+    height: 220px;
+    box-sizing: border-box;
+    padding-left: 9px;
+    overflow: scroll;
+    border-bottom: solid 1px black;
 }
 
 #console .console-text {
@@ -158,10 +159,9 @@ ul {
 
 
 #playerBox {
-  position: absolute;
-  top: 231px;
-  width: 166px;
-  height: 109px;
+    width: 265px;
+    height: 109px;
+    float: right;
 }
 
 #playerBox button {
