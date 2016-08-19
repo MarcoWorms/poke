@@ -183,6 +183,10 @@ const EVOLUTIONS = {
     "level":"60",
     "to":"Muk"
   },
+  "Shellder":{
+    "level":"60",
+    "to":"Cloyster"
+  },
   "Gastly":{
     "level":"80",
     "to":"Haunter"
