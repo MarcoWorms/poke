@@ -117,11 +117,9 @@ ul {
 
 #playerPokes {
   float: left;
-  min-height: none;
-  max-height: none;
   height: 600px;
+  overflow: hidden;
   text-align: center;
-  overflow-y: scroll;
   text-align: left;
 }
 
@@ -129,9 +127,16 @@ ul {
   font-size: 14px;
 }
 
+playerPokes .controls {
+  position: relative;
+}
+
 #playerPokesList {
   position: relative;
-  left: 8px
+  padding-left: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 525px;
 }
 
 #heal {
