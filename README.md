@@ -1,5 +1,6 @@
-# poke
-A pokemon idle game
+# Poke
+
+This game can be played at www.worms.io/poke
 
 ### Changelog:
 #### 0.0.2
