@@ -123,11 +123,15 @@ ul {
   text-align: left;
 }
 
+#playerPokes .container{
+  max-height: 600px;
+}
+
 #playerPokes .checkDescription {
   font-size: 14px;
 }
 
-playerPokes .controls {
+#playerPokes .controls {
   position: relative;
 }
 
