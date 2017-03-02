@@ -1,6 +1,7 @@
 # Poke
+There is a fork of this game that is receiving updates here https://github.com/RichardPaulAstley/richardpaulastley.github.io
 
-This game can be played at www.worms.io/poke
+The original version can be played at www.worms.io/poke
 
 ### Changelog:
 #### 0.0.2
